@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "机器狗任务规划诊断性Q&A题目",
+  "type": "object",
+  "required": ["qa_id", "source_test_id", "dimension", "difficulty", "type", "question", "answer"],
+  "properties": {
+    "qa_id": {
+      "type": "string",
+      "pattern": "^QA-D[1-5]-[A-E]\\d{2}-\\d{3}$",
+      "description": "题目唯一ID，格式 QA-{维度}-{源题号}-{序号}，如 QA-D2-B01-001"
+    },
+    "source_test_id": {
+      "type": "string",
+      "pattern": "^DOG-[A-E]\\d{2}$",
+      "description": "来源的开放生成题ID"
+    },
+    "dimension": {
+      "type": "string",
+      "enum": ["D1", "D2", "D3", "D4", "D5"],
+      "description": "D1=任务拆解 D2=时序理解 D3=物体/动作依赖 D4=场景/条件判断 D5=安全与社交"
+    },
+    "sub_dimension": {
+      "type": "string",
+      "description": "细分能力标签，如 dependency_topology, object_chain, stage_ordering, branch_condition, hri_judgment 等"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "type": {
+      "type": "string",
+      "enum": ["single_choice", "multi_choice", "true_false", "ordering"],
+      "description": "single_choice=单选题 multi_choice=多选题 true_false=判断题 ordering=排序题"
+    },
+    "question": {
+      "type": "string",
+      "description": "题目文本"
+    },
+    "scene_context": {
+      "type": "string",
+      "description": "场景上下文（可选），为题目提供环境背景"
+    },
+    "options": {
+      "type": "array",
+      "description": "选项列表（single_choice/multi_choice必填，true_false不需要）",
+      "items": {
+        "type": "object",
+        "required": ["key", "text"],
+        "properties": {
+          "key": {"type": "string", "pattern": "^[A-E]$"},
+          "text": {"type": "string"}
+        }
+      }
+    },
+    "answer": {
+      "description": "正确答案。single_choice='A'~'E'，multi_choice='A,C'，true_false=true/false，ordering='A→B→C→D'",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "boolean"}
+      ]
+    },
+    "explanation": {
+      "type": "string",
+      "description": "答案解析，说明为什么这个选项正确"
+    },
+    "distractor_source": {
+      "type": "string",
+      "description": "干扰项设计思路（可选），如 'from_common_error' 'reversed_order' 'wrong_object' 'wrong_location'",
+      "enum": ["from_common_error", "reversed_order", "wrong_object", "wrong_location", "missing_step", "extra_step", "wrong_social", "wrong_branch", null]
+    }
+  }
+}

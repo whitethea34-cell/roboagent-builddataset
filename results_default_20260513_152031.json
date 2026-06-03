@@ -1,0 +1,1517 @@
+{
+  "meta": {
+    "timestamp": "20260513_152031",
+    "timestamp_display": "2026-05-13 15:21:06",
+    "tag": "default",
+    "prompt_md5": "77e48a04",
+    "port": 8083,
+    "temperature": 0.3,
+    "total": 50,
+    "avg_score": 0.58078,
+    "prompt": "你是机器狗任务规划器。将指令拆解为分阶段动作序列。\n\n规则：\n1. 先判断 HRI：指令涉及\"我/你/客人/递给/告知/引导/陪伴/打招呼\" → HRI=是；纯物体操作/巡逻/检查/充电 → HRI=否\n2. HRI=是：最终阶段必须含 NAVIGATE(靠近人)+社交动作(SPEAK/WAVE/BOW)\n3. 每个任务必须包含环境感知动作（OBSERVE 观察环境 和/或 SELF_CHECK 自检状态），不可跳过\n4. 每个子任务开始前亮 LED_BLUE，结束后亮 LED_GREEN，异常亮 LED_RED\n5. 阶段名称必须严格从子任务标签中选词。多点场景可加字母/数字后缀（如巡逻R1、前往A）。禁止使用类别名（如\"社交互动\"）或自创词\n6. 输出格式：HRI：是/否 | 阶段：A→B→C\n   序号. 动作|目标\n\n【状态灯】LED_BLUE(任务中-蓝灯闪烁) LED_GREEN(完成-绿灯常亮) LED_RED(异常-红灯闪烁) LED_WHITE(待命-白灯呼吸)\n【状态感知】OBSERVE(观察环境) SELF_CHECK(自检电量/状态) FIND(搜索目标) RANGE(判断距离/空间)\n【导航移动】NAVIGATE(导航到目标点) WALK(标准步态行走) TROT(快速小跑) BACK(倒退) TURN(转向) SPIN(原地旋转) CROUCH(匍匐通过低矮空间) CLIMB(爬楼梯/台阶) AVOID(动态避障) FOLLOW(跟随人员) RETURN(返回起点) STOP(停止待机)\n【肢体动作】STAND(起立) LIE_DOWN(趴下) SIT(坐下) JUMP(跳跃) WAVE(招手) BOW(鞠躬) SHAKE(握手) NOD(点头确认) SHAKE_HEAD(摇头否定) ROLL(翻滚) DANCE(舞蹈) KICK(蹬腿)\n【交互运载】CARRY(背负/运载物品) DROP(卸下载物) PUSH(推物体/推门) SPEAK(语音播报) BEEP(提示音) CAPTURE(拍照) WAIT(原地等待指令) EMERGENCY(紧急制动)\n\n【任务调度】准备、出发、就位、待机、收尾、充电\n【环境感知】观察、检测、检查、搜索、确认、察觉\n【导航移动】前往、接近、抵达、通过、绕行、越障、攀爬、匍匐、推门、返回\n【物品操作】取物、装载、运送、递送\n【社交互动】迎接、互动、致意、告别、引导、表演\n【巡逻巡检】巡逻、巡检、汇总\n【安全异常】判断、响应警报、恢复、切换\n\n【示例1：巡逻】\n指令：绕仓库巡逻一圈\nHRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻起点 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n【示例2：递送】\n指令：把门口的快递取来给我\nHRI：是 | 阶段：取物→运送→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|快递 5. SELF_CHECK|自身状态 6. CARRY|快递\n7. NAVIGATE|主人位置 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|您的快递 11. DROP|快递放下 12. BOW|致意\n\n【示例3：社交】\n指令：有客人来了，去迎接一下\nHRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|客人 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯\n\n【示例4：充电】\n指令：电量低了，自己去充电\nHRI：否 | 阶段：检查→前往→就位\n1. SELF_CHECK|电量 2. LED_BLUE|状态灯 3. NAVIGATE|充电桩\n4. WALK|前往充电桩 5. BACK|对准充电桩 6. LED_GREEN|状态灯\n7. STOP|开始充电",
+    "testset": "task_plan_testset.json",
+    "json_file": "results_default_20260513_152031.json"
+  },
+  "details": [
+    {
+      "test_id": "DOG-A01",
+      "category": "A",
+      "instruction": "绕仓库巡逻一圈，检查是否有异常",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|仓库入口 3. WALK|沿巡逻路线\n4. OBSERVE|仓库区域 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|仓库入口 8. STOP|待机",
+      "elapsed": 0.58,
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 1045,
+        "total_tokens": 1122,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.828,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 1.0,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['准备', '巡逻', '收尾'] | 匹配: 3/3个阶段"
+        },
+        "actions": {
+          "score": 0.713,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.75 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A02",
+      "category": "A",
+      "instruction": "电量低了，自己去充电",
+      "raw_output": "HRI：否 | 阶段：检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|充电桩 3. WALK|前往充电桩 4. BACK|对准充电桩 5. LED_GREEN|状态灯\n6. SELF_CHECK|电量 7. STOP|开始充电",
+      "elapsed": 0.21,
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 1042,
+        "total_tokens": 1109,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.828,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 1.0,
+          "detail": "预测: ['检查', '前往', '就位'] | 标准: ['检查', '前往', '就位'] | 匹配: 3/3个阶段"
+        },
+        "actions": {
+          "score": 0.714,
+          "detail": "动作覆盖: 0.43 | 依赖满足: 0.71 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A03",
+      "category": "A",
+      "instruction": "跳过前方矮栏，到达B点",
+      "raw_output": "HRI：否 | 阶段：准备→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|前往B点 3. WALK|沿路径前进 4. OBSERVE|检测前方矮栏 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始前进",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1045,
+        "total_tokens": 1119,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.653,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['准备', '前往', '就位'] | 标准: ['观察', '越障', '抵达'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.768,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.89 (违规1次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A04",
+      "category": "A",
+      "instruction": "绕训练场跑三圈",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|训练场 3. WALK|沿训练场外围 4. OBSERVE|周围无人员 5. SELF_CHECK|自身电量充足 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机",
+      "elapsed": 0.25,
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 1043,
+        "total_tokens": 1122,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.617,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.55,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['准备', '执行', '结束'] | 匹配: 2/3个阶段"
+        },
+        "actions": {
+          "score": 0.55,
+          "detail": "动作覆盖: 0.17 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.33"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A05",
+      "category": "A",
+      "instruction": "在场地上找一下红色的球在哪里",
+      "raw_output": "HRI：否 | 阶段：准备→检查→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|场地中心 3. WALK|沿地面直线行走\n4. OBSERVE|检测地面纹理与反光 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|待机",
+      "elapsed": 0.25,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1044,
+        "total_tokens": 1118,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.578,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '检查', '就位'] | 标准: ['搜索', '定位', '报告'] | 匹配: 0/3个阶段"
+        },
+        "actions": {
+          "score": 0.714,
+          "detail": "动作覆盖: 0.43 | 依赖满足: 0.71 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A06",
+      "category": "A",
+      "instruction": "上二楼",
+      "raw_output": "HRI：否 | 阶段：准备→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|楼梯间 3. WALK|沿楼梯上行\n4. OBSERVE|环境 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始上楼",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 1039,
+        "total_tokens": 1109,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.574,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['准备', '前往', '就位'] | 标准: ['接近', '攀爬', '抵达'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.636,
+          "detail": "动作覆盖: 0.29 | 依赖满足: 0.88 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A07",
+      "category": "A",
+      "instruction": "绕过地上的杂物，到对面去",
+      "raw_output": "HRI：是 | 阶段：准备→导航→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|地面杂物 3. WALK|沿地面绕行\n4. OBSERVE|地面杂物 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机",
+      "elapsed": 0.27,
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 1044,
+        "total_tokens": 1120,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.448,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为否）"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['准备', '导航', '就位'] | 标准: ['观察', '绕行', '抵达'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.675,
+          "detail": "动作覆盖: 0.25 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A08",
+      "category": "A",
+      "instruction": "推开虚掩的门，进房间检查",
+      "raw_output": "HRI：否 | 阶段：准备→检查→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关 4. OBSERVE|门虚掩状态 5. SELF_CHECK|电量/状态 6. LED_GREEN|状态灯\n7. RETURN|玄关 8. STOP|待机",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 1045,
+        "total_tokens": 1122,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.568,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['准备', '检查', '就位'] | 标准: ['接近', '推门', '进入'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.625,
+          "detail": "动作覆盖: 0.25 | 依赖满足: 0.88 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A09",
+      "category": "A",
+      "instruction": "从桌子下面钻过去，到达另一边",
+      "raw_output": "HRI：否 | 阶段：准备→检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|桌子下方 3. WALK|沿桌腿向下 4. OBSERVE|桌下空间 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始移动",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 1045,
+        "total_tokens": 1120,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.614,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.04,
+          "detail": "预测: ['准备', '检查', '前往', '就位'] | 标准: ['观察', '匍匐', '通过', '恢复'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.756,
+          "detail": "动作覆盖: 0.33 | 依赖满足: 0.89 (违规1次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-A10",
+      "category": "A",
+      "instruction": "依次巡查坐标P1、P2、P3，每个点做一次状态自检",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻起点 3. WALK|沿巡逻路线 4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机",
+      "elapsed": 0.25,
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 1054,
+        "total_tokens": 1130,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.613,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.29,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['准备', 'P1巡查', 'P2巡查', 'P3巡查', '收尾'] | 匹配: 2/5个阶段"
+        },
+        "actions": {
+          "score": 0.651,
+          "detail": "动作覆盖: 0.25 | 依赖满足: 0.94 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B01",
+      "category": "B",
+      "instruction": "把门口的快递取来给我",
+      "raw_output": "HRI：是 | 阶段：取物→运送→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|快递 5. SELF_CHECK|自身状态 6. CARRY|快递\n7. NAVIGATE|主人位置 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|您的快递 11. DROP|快递放下 12. BOW|致意",
+      "elapsed": 0.34,
+      "usage": {
+        "completion_tokens": 111,
+        "prompt_tokens": 1043,
+        "total_tokens": 1154,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.839,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.93,
+          "detail": "预测: ['取物', '运送', '递送'] | 标准: ['取件', '运送', '递送'] | 匹配: 3/3个阶段"
+        },
+        "actions": {
+          "score": 0.761,
+          "detail": "动作覆盖: 0.44 | 依赖满足: 0.82 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B02",
+      "category": "B",
+      "instruction": "给客厅的客人送瓶水过去",
+      "raw_output": "HRI：是 | 阶段：察觉→递送→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|客厅 3. WALK|前往客厅\n4. FIND|客人 5. WAVE|打招呼 6. SPEAK|您好，客人\n7. BOW|鞠躬 8. LED_GREEN|状态灯\n9. CARRY|递送水\n10. NAVIGATE|客人位置 11. WALK|返回 12. LED_GREEN|状态灯\n13. SPEAK|您的水已送达\n14. DROP|水放下\n15. BOW|致意",
+      "elapsed": 0.39,
+      "usage": {
+        "completion_tokens": 140,
+        "prompt_tokens": 1044,
+        "total_tokens": 1184,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.68,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.23,
+          "detail": "预测: ['察觉', '递送', '就位'] | 标准: ['取水', '运送', '递送'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.787,
+          "detail": "动作覆盖: 0.78 | 依赖满足: 0.73 (违规3次) | 动作匹配: 0.88"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B03",
+      "category": "B",
+      "instruction": "把拖鞋叼过来",
+      "raw_output": "HRI：是 | 阶段：准备→递送→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|拖鞋 5. SELF_CHECK|自身状态 6. CARRY|拖鞋\n7. NAVIGATE|主人位置 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|您的拖鞋 11. DROP|拖鞋放下 12. BOW|致意",
+      "elapsed": 0.33,
+      "usage": {
+        "completion_tokens": 110,
+        "prompt_tokens": 1041,
+        "total_tokens": 1151,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.626,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.23,
+          "detail": "预测: ['准备', '递送', '收尾'] | 标准: ['寻找', '取物', '递送'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.698,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.90 (违规1次) | 动作匹配: 0.75"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B04",
+      "category": "B",
+      "instruction": "把这份文件送给302室的张工",
+      "raw_output": "HRI：是 | 阶段：准备→递送→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|张工 5. SELF_CHECK|自身状态 6. CARRY|张工\n7. NAVIGATE|302室 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|张工，您的快递已送达\n11. DROP|快递放下\n12. BOW|致意",
+      "elapsed": 0.34,
+      "usage": {
+        "completion_tokens": 119,
+        "prompt_tokens": 1047,
+        "total_tokens": 1166,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.717,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.37,
+          "detail": "预测: ['准备', '递送', '收尾'] | 标准: ['取件', '导航', '递送', '返回'] | 匹配: 2/4个阶段"
+        },
+        "actions": {
+          "score": 0.791,
+          "detail": "动作覆盖: 0.55 | 依赖满足: 0.82 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B05",
+      "category": "B",
+      "instruction": "把防晒霜送给在花园里浇水的人",
+      "raw_output": "HRI：是 | 阶段：准备→递送→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|花园 3. WALK|前往花园\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|花园 8. STOP|待机\n9. FIND|浇水人 10. WAVE|打招呼 11. SPEAK|欢迎\n12. BOW|鞠躬 13. CARRY|防晒霜\n14. NAVIGATE|浇水人位置 15. WALK|返回 16. LED_GREEN|状态灯\n17. SPEAK|您的防晒霜 18. DROP|防晒霜给浇水人 19. BOW|致意",
+      "elapsed": 0.46,
+      "usage": {
+        "completion_tokens": 170,
+        "prompt_tokens": 1045,
+        "total_tokens": 1215,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.563,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.12,
+          "detail": "预测: ['准备', '递送', '收尾'] | 标准: ['取物', '前往花园', '寻找人员', '递送'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.638,
+          "detail": "动作覆盖: 0.44 | 依赖满足: 0.83 (违规2次) | 动作匹配: 0.57"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B06",
+      "category": "B",
+      "instruction": "把工具箱送到地下车库正在修车的师傅那里",
+      "raw_output": "HRI：是 | 阶段：准备→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|车库入口 3. WALK|前往车库\n4. FIND|工具箱 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|车库\n8. STOP|待机\n\n",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1047,
+        "total_tokens": 1121,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.52,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.08,
+          "detail": "预测: ['准备', '前往', '就位'] | 标准: ['取工具', '前往车库', '寻找师傅', '递送'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.583,
+          "detail": "动作覆盖: 0.22 | 依赖满足: 0.92 (违规1次) | 动作匹配: 0.50"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B07",
+      "category": "B",
+      "instruction": "把药和水送到卧室，病人需要吃药",
+      "raw_output": "HRI：是 | 阶段：准备→递送→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|卧室 3. WALK|前往卧室\n4. FIND|病人 5. SELF_CHECK|自身状态 6. CARRY|药和水\n7. NAVIGATE|卧室 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|您的药和水 11. DROP|药和水放在病人床边 12. BOW|致意",
+      "elapsed": 0.34,
+      "usage": {
+        "completion_tokens": 114,
+        "prompt_tokens": 1046,
+        "total_tokens": 1160,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.65,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.12,
+          "detail": "预测: ['准备', '递送', '就位'] | 标准: ['取水', '取药', '运送', '递送'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.783,
+          "detail": "动作覆盖: 0.44 | 依赖满足: 0.88 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B08",
+      "category": "B",
+      "instruction": "把那边的玩具球叼给小朋友",
+      "raw_output": "HRI：否 | 阶段：准备→充电\n1. LED_BLUE|状态灯 2. NAVIGATE|玩具球区 3. WALK|前往玩具球区\n4. FIND|玩具球 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始充电",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 1044,
+        "total_tokens": 1114,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.38,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为是）"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '充电'] | 标准: ['取球', '寻找小朋友', '互动递送'] | 匹配: 0/3个阶段"
+        },
+        "actions": {
+          "score": 0.633,
+          "detail": "动作覆盖: 0.22 | 依赖满足: 0.92 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B09",
+      "category": "B",
+      "instruction": "把这个包裹送到前台，如果有多个包裹一并带去",
+      "raw_output": "HRI：是 | 阶段：准备→运送→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|包裹 5. SELF_CHECK|自身状态 6. CARRY|包裹\n7. NAVIGATE|前台位置 8. WALK|前往前台\n9. LED_GREEN|状态灯\n10. SPEAK|您的包裹\n11. DROP|包裹放下\n12. BOW|致意",
+      "elapsed": 0.33,
+      "usage": {
+        "completion_tokens": 111,
+        "prompt_tokens": 1047,
+        "total_tokens": 1158,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.721,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.42,
+          "detail": "预测: ['准备', '运送', '递送'] | 标准: ['检查', '取件', '运送', '递送'] | 匹配: 2/4个阶段"
+        },
+        "actions": {
+          "score": 0.776,
+          "detail": "动作覆盖: 0.60 | 依赖满足: 0.85 (违规2次) | 动作匹配: 0.86"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-B10",
+      "category": "B",
+      "instruction": "毛巾和水都送到操场上给跑步的人",
+      "raw_output": "HRI：是 | 阶段：准备→运送→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|操场 3. WALK|前往操场\n4. OBSERVE|跑步者 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n9. CARRY|毛巾 10. CARRY|水 11. CARRY|毛巾 12. CARRY|水 13. CARRY|水 14. SPEAK|毛巾 15. SPEAK|水 16. DROP|毛巾 17. DROP|水 18. BOW|致意",
+      "elapsed": 0.42,
+      "usage": {
+        "completion_tokens": 153,
+        "prompt_tokens": 1045,
+        "total_tokens": 1198,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.603,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.29,
+          "detail": "预测: ['准备', '运送', '递送'] | 标准: ['取毛巾', '取水', '运送', '寻找人员', '递送'] | 匹配: 2/5个阶段"
+        },
+        "actions": {
+          "score": 0.634,
+          "detail": "动作覆盖: 0.40 | 依赖满足: 0.75 (违规4次) | 动作匹配: 0.71"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C01",
+      "category": "C",
+      "instruction": "巡逻一楼所有房间，如果有异常拍照回来报告",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻起点 3. WALK|沿巡逻路线 4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n9. LED_BLUE|状态灯 10. NAVIGATE|玄关 11. WALK|前往玄关 12. OBSERVE|环境异常 13. SELF_CHECK|自身状态 14. LED_GREEN|状态灯\n15. LED_BLUE|状态灯 16. NAVIGATE|电梯 17. WALK|前往电梯 18. OBSERVE|环境异常 19. SELF_CHECK|自身状态 20. LED_GREEN|状态灯\n21. LED_BLUE|状态灯 22. NAVIGATE|电梯 23. WALK|前往电梯 24. OBSERVE|环境异常 25. SELF_CHECK|自身状态 26. LED_GREEN|状态灯\n27. LED_BLUE|状态灯 28. NAVIGATE|电梯 29. WALK|前往电梯 30. OBSERVE|环境异常 31. SELF_CHECK|自身状态 32. LED_GREEN|状态灯\n33. LED_BLUE|状态灯 34. NAVIGATE|电梯 35. WALK|前往电梯 36. OBSERVE|环境异常 37. SELF_CHECK|自身状态 38. LED_GREEN|状态灯\n39. LED_BLUE|状态灯 40. NAVIGATE|电梯 41. WALK|前往电梯 42. OBSERVE|环境异常 43.",
+      "elapsed": 0.98,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1047,
+        "total_tokens": 1431,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.589,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.48,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['准备', '巡逻R1', '巡逻R2', '巡逻R3', '汇总返回'] | 匹配: 3/5个阶段"
+        },
+        "actions": {
+          "score": 0.532,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.70 (违规6次) | 动作匹配: 0.47"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C02",
+      "category": "C",
+      "instruction": "去车间检查设备A、B、C的运行状态，每个拍照一张",
+      "raw_output": "HRI：否 | 阶段：检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|车间入口 3. WALK|前往车间\n4. OBSERVE|设备A、B、C 运行状态 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|待机\n8. RETURN|车间入口",
+      "elapsed": 0.26,
+      "usage": {
+        "completion_tokens": 83,
+        "prompt_tokens": 1052,
+        "total_tokens": 1135,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.649,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.12,
+          "detail": "预测: ['检查', '前往', '就位'] | 标准: ['前往A', '检查A', '前往B', '检查B', '前往C', '检查C', '返回'] | 匹配: 2/7个阶段"
+        },
+        "actions": {
+          "score": 0.781,
+          "detail": "动作覆盖: 0.44 | 依赖满足: 0.87 (违规3次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C03",
+      "category": "C",
+      "instruction": "包裹A送到301室，包裹B送到505室，送完回报",
+      "raw_output": "HRI：是 | 阶段：准备→出发→就位→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关 4. FIND|包裹A 5. SELF_CHECK|自身状态 6. CARRY|包裹A 7. NAVIGATE|301室 8. WALK|前往301室 9. OBSERVE|301室环境 10. SELF_CHECK|自身状态 11. LED_GREEN|状态灯 12. RETURN|起点 13. STOP|待机 14. SPEAK|包裹A已送达 15. BOW|致意 16. LED_GREEN|状态灯 17. RETURN|起点 18. STOP|待机 19. CARRY|包裹B 20. NAVIGATE|505室 21. WALK|前往505室 22. OBSERVE|505室环境 23. SELF_CHECK|自身状态 24. LED_GREEN|状态灯 25. RETURN|起点 26. STOP|待机 27. SPEAK|包裹B已送达 28. BOW|致意 29. LED_GREEN|状态灯",
+      "elapsed": 0.72,
+      "usage": {
+        "completion_tokens": 277,
+        "prompt_tokens": 1056,
+        "total_tokens": 1333,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.431,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为否）"
+        },
+        "stages": {
+          "score": 0.1,
+          "detail": "预测: ['准备', '出发', '就位', '收尾'] | 标准: ['取件', '送A', '送B', '收尾'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.676,
+          "detail": "动作覆盖: 0.60 | 依赖满足: 0.79 (违规4次) | 动作匹配: 0.60"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C04",
+      "category": "C",
+      "instruction": "先回充电桩补电，然后再去巡逻南区",
+      "raw_output": "HRI：否 | 阶段：检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|充电桩 3. WALK|前往充电桩 4. BACK|对准充电桩 5. LED_GREEN|状态灯 6. STOP|开始充电\n7. LED_GREEN|状态灯 8. STOP|待机",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1047,
+        "total_tokens": 1121,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.594,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['检查', '前往', '就位'] | 标准: ['充电', '巡逻准备', '巡逻', '收尾'] | 匹配: 0/4个阶段"
+        },
+        "actions": {
+          "score": 0.74,
+          "detail": "动作覆盖: 0.30 | 依赖满足: 0.88 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C05",
+      "category": "C",
+      "instruction": "我的钥匙可能掉在训练场了，去找找，找到带回来，找不到也回来告诉我",
+      "raw_output": "HRI：否 | 阶段：准备→充电\n1. LED_BLUE|状态灯 2. NAVIGATE|训练场 3. WALK|前往训练场\n4. FIND|钥匙 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始充电",
+      "elapsed": 0.22,
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 1057,
+        "total_tokens": 1124,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.376,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为是）"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '充电'] | 标准: ['搜索', '判断', '带回/回报'] | 匹配: 0/3个阶段"
+        },
+        "actions": {
+          "score": 0.626,
+          "detail": "动作覆盖: 0.18 | 依赖满足: 0.93 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C06",
+      "category": "C",
+      "instruction": "把来访的李总引导到3号会议室，然后去茶水间取水送过去",
+      "raw_output": "HRI：是 | 阶段：察觉→引导→接待\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|李总 5. WAVE|打招呼 6. SPEAK|欢迎李总\n7. BOW|鞠躬 8. LED_GREEN|状态灯\n9. NAVIGATE|3 号会议室 10. WALK|前往会议室\n11. OBSERVE|会议室环境 12. SELF_CHECK|自身状态\n13. NAVIGATE|茶水间 14. WALK|前往茶水间\n15. OBSERVE|茶水间环境 16. SELF_CHECK|自身状态\n17. NAVIGATE|茶水间取水口 18. WALK|前往取水口\n19. OBSERVE|茶水间环境 20. SELF_CHECK|自身状态\n21. NAVIGATE|茶水间取水口 22. WALK|前往取水口\n23. OBSERVE|茶水间环境 24. SELF_CHECK|自身状态\n25. NAVIGATE|茶水间取水口 26. WALK|前往取水口\n27. OBSERVE|茶水间环境 28. SELF_CHECK|自身状态\n29. NAVIGATE|茶水间取水口 30. WALK|前往取水口\n30. OBSERVE|茶水间环境 31. SELF_CHECK|自身状态\n32. NAVIGATE|茶水间取水口 33. WALK|前往取水口\n34. OBSERVE|茶水间环境 35. SELF_CHECK|自身状态\n36. NAVIGATE|茶水间取水口 37. WALK|前往取水口\n38. OBS",
+      "elapsed": 0.98,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1054,
+        "total_tokens": 1438,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.595,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.37,
+          "detail": "预测: ['察觉', '引导', '接待'] | 标准: ['迎接', '引导', '取水', '送达'] | 匹配: 2/4个阶段"
+        },
+        "actions": {
+          "score": 0.588,
+          "detail": "动作覆盖: 0.36 | 依赖满足: 0.90 (违规2次) | 动作匹配: 0.39"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C07",
+      "category": "C",
+      "instruction": "早上例行：检查大门是否关好、窗户是否关闭、电源是否正常，全部确认后回报",
+      "raw_output": "HRI：否 | 阶段：检查→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|大门 3. WALK|沿大门 4. OBSERVE|检查门锁 5. SELF_CHECK|自检电量 6. LED_GREEN|状态灯\n7. STOP|待机\n8. LED_GREEN|状态灯\n9. SPEAK|检查门锁是否关好\n10. SPEAK|检查窗户是否关闭\n11. SPEAK|检查电源是否正常\n12. BOW|致意",
+      "elapsed": 0.33,
+      "usage": {
+        "completion_tokens": 115,
+        "prompt_tokens": 1056,
+        "total_tokens": 1171,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.582,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.1,
+          "detail": "预测: ['检查', '就位'] | 标准: ['大门检查', '窗户检查', '电源检查', '汇总'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.678,
+          "detail": "动作覆盖: 0.56 | 依赖满足: 0.81 (违规4次) | 动作匹配: 0.62"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C08",
+      "category": "C",
+      "instruction": "去中庭表演一段舞蹈，结束后引导观众从东门离场",
+      "raw_output": "HRI：是 | 阶段：表演→离场\n1. LED_BLUE|状态灯 2. NAVIGATE|中庭 3. WALK|沿中庭路线 4. OBSERVE|环境 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|中庭 8. STOP|待机\n9. SPEAK|各位观众，大家好！ 10. WAVE|招手示意 11. BOW|鞠躬致意 12. SHAKE|握手 13. DANCE|表演舞蹈 14. CARRY|递送道具 15. WALK|沿中庭路线 16. OBSERVE|环境 17. SELF_CHECK|自身状态 18. LED_GREEN|状态灯\n19. RETURN|东门 20. STOP|待机",
+      "elapsed": 0.5,
+      "usage": {
+        "completion_tokens": 183,
+        "prompt_tokens": 1049,
+        "total_tokens": 1232,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.648,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.59,
+          "detail": "预测: ['表演', '离场'] | 标准: ['就位', '表演', '引导离场'] | 匹配: 2/3个阶段"
+        },
+        "actions": {
+          "score": 0.584,
+          "detail": "动作覆盖: 0.40 | 依赖满足: 0.79 (违规3次) | 动作匹配: 0.50"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C09",
+      "category": "C",
+      "instruction": "开馆前检查：检查走廊照明、确认消防通道畅通、确认卫生间无异味",
+      "raw_output": "HRI：否 | 阶段：检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|走廊 3. WALK|沿走廊 4. OBSERVE|走廊照明 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始检查\n8. SPEAK|检查照明情况\n9. OBSERVE|消防通道 10. SELF_CHECK|自身状态 11. LED_GREEN|状态灯\n12. SPEAK|确认消防通道畅通\n13. OBSERVE|卫生间 14. SELF_CHECK|自身状态 15. LED_GREEN|状态灯\n16. SPEAK|确认卫生间无异味\n17. RETURN|起点 18. STOP|待机",
+      "elapsed": 0.46,
+      "usage": {
+        "completion_tokens": 166,
+        "prompt_tokens": 1055,
+        "total_tokens": 1221,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.582,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.08,
+          "detail": "预测: ['检查', '前往', '就位'] | 标准: ['照明检查', '消防检查', '卫生检查', '汇总'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.686,
+          "detail": "动作覆盖: 0.56 | 依赖满足: 0.71 (违规6次) | 动作匹配: 0.78"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-C10",
+      "category": "C",
+      "instruction": "模拟火警：检测到警报后，逐个房间检查是否有人，引导所有人到集合点",
+      "raw_output": "HRI：是 | 阶段：察觉→引导→集合\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|火警警报 5. OBSERVE|环境异常 6. SELF_CHECK|自身状态\n7. LED_GREEN|状态灯\n8. SPEAK|检测到火警！\n9. BOW|鞠躬致意\n10. WAVE|招手示意\n11. WALK|前往集合点\n12. NAVIGATE|集合点\n13. WALK|前往集合点\n14. OBSERVE|环境异常\n15. SELF_CHECK|自身状态\n16. LED_GREEN|状态灯\n17. RETURN|集合点\n18. STOP|待机",
+      "elapsed": 0.47,
+      "usage": {
+        "completion_tokens": 170,
+        "prompt_tokens": 1056,
+        "total_tokens": 1226,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.535,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.08,
+          "detail": "预测: ['察觉', '引导', '集合'] | 标准: ['响应警报', '检查房间', '引导撤离', '确认清场'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.608,
+          "detail": "动作覆盖: 0.78 | 依赖满足: 0.56 (违规7次) | 动作匹配: 0.50"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D01",
+      "category": "D",
+      "instruction": "有客人到门口了，去迎接一下",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|客人 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1046,
+        "total_tokens": 1120,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.828,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 1.0,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['察觉', '迎接', '致意'] | 匹配: 3/3个阶段"
+        },
+        "actions": {
+          "score": 0.713,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.75 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D02",
+      "category": "D",
+      "instruction": "跟小主人玩一会儿",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|小主人 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 1042,
+        "total_tokens": 1117,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.566,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['接近', '互动', '收尾'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.622,
+          "detail": "动作覆盖: 0.22 | 依赖满足: 0.89 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D03",
+      "category": "D",
+      "instruction": "主人回来了，去门口迎接",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|主人 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1043,
+        "total_tokens": 1117,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.705,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.93,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['察觉', '迎接', '互动'] | 匹配: 3/3个阶段"
+        },
+        "actions": {
+          "score": 0.537,
+          "detail": "动作覆盖: 0.12 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.33"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D04",
+      "category": "D",
+      "instruction": "在展厅入口当迎宾，有人来就打招呼",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|展厅入口 3. WALK|前往展厅入口 4. FIND|迎宾人员 5. WAVE|打招呼 6. SPEAK|欢迎",
+      "elapsed": 0.21,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1047,
+        "total_tokens": 1109,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.596,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.12,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['待机', '检测', '迎接', '复位'] | 匹配: 1/4个阶段"
+        },
+        "actions": {
+          "score": 0.693,
+          "detail": "动作覆盖: 0.20 | 依赖满足: 0.83 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D05",
+      "category": "D",
+      "instruction": "来，给大家表演一段舞蹈",
+      "raw_output": "HRI：是 | 阶段：表演→社交互动\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|舞者 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯\n9. DANCE|舞蹈表演\n10. SHAKE|握手\n11. RETURN|起点 12. STOP|待机",
+      "elapsed": 0.3,
+      "usage": {
+        "completion_tokens": 102,
+        "prompt_tokens": 1043,
+        "total_tokens": 1145,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.55,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.25,
+          "detail": "预测: ['表演', '社交互动'] | 标准: ['就位', '表演', '谢幕'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.562,
+          "detail": "动作覆盖: 0.38 | 依赖满足: 0.75 (违规2次) | 动作匹配: 0.50"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D06",
+      "category": "D",
+      "instruction": "跟这位新朋友打个招呼，握个手",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|新朋友 5. WAVE|打招呼 6. SPEAK|欢迎\n7. BOW|鞠躬 8. LED_GREEN|状态灯",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 1046,
+        "total_tokens": 1120,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.515,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['接近', '互动', '退后'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.537,
+          "detail": "动作覆盖: 0.12 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.33"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D07",
+      "category": "D",
+      "instruction": "确认一下你听懂了",
+      "raw_output": "HRI：是 | 阶段：准备→就绪→待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|检查周围环境 3. WALK|确认周围环境 4. OBSERVE|检测周围环境 5. SELF_CHECK|自检自身状态 6. LED_GREEN|状态灯 7. STOP|待机",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 1042,
+        "total_tokens": 1113,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.495,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '就绪', '待机'] | 标准: ['确认'] | 匹配: 0/1个阶段"
+        },
+        "actions": {
+          "score": 0.575,
+          "detail": "动作覆盖: 0.25 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.33"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D08",
+      "category": "D",
+      "instruction": "找到我丢的球了吗？（实际没有）",
+      "raw_output": "HRI：否 | 阶段：检查→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|球 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始充电",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 1048,
+        "total_tokens": 1115,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.345,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为是）"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['检查', '前往', '就位'] | 标准: ['回应'] | 匹配: 0/1个阶段"
+        },
+        "actions": {
+          "score": 0.575,
+          "detail": "动作覆盖: 0.25 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.33"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D09",
+      "category": "D",
+      "instruction": "你做得很好，谢谢",
+      "raw_output": "HRI：是 | 阶段：社交互动→收尾\n1. LED_BLUE|状态灯 2. WAVE|招手致意 3. SPEAK|谢谢 4. BOW|鞠躬 5. LED_GREEN|状态灯",
+      "elapsed": 0.19,
+      "usage": {
+        "completion_tokens": 52,
+        "prompt_tokens": 1042,
+        "total_tokens": 1094,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.66,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['社交互动', '收尾'] | 标准: ['致谢'] | 匹配: 0/1个阶段"
+        },
+        "actions": {
+          "score": 0.85,
+          "detail": "动作覆盖: 0.50 | 依赖满足: 1.00 (违规0次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-D10",
+      "category": "D",
+      "instruction": "带这位参观者依次看展区1、展区2、展区3，每个展区做个简单介绍动作",
+      "raw_output": "HRI：是 | 阶段：准备→巡视→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|展区入口 3. WALK|前往展区 4. OBSERVE|展区环境 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|展区 8. STOP|待机\n9. LED_BLUE|状态灯 10. NAVIGATE|展区1 11. WALK|参观展区1 12. OBSERVE|展品细节 13. SELF_CHECK|自身状态 14. LED_GREEN|状态灯\n15. RETURN|展区1 16. STOP|待机\n17. LED_BLUE|状态灯 18. NAVIGATE|展区2 19. WALK|参观展区2 20. OBSERVE|展品细节 21. SELF_CHECK|自身状态 22. LED_GREEN|状态灯\n23. RETURN|展区2 24. STOP|待机\n25. LED_BLUE|状态灯 26. NAVIGATE|展区3 27. WALK|参观展区3 28. OBSERVE|展品细节 29. SELF_CHECK|自身状态 30. LED_GREEN|状态灯\n31. RETURN|展区3 32. STOP|待机\n33. LED_BLUE|状态灯 34. NAVIGATE|展区出口 35. WALK|返回起点\n36. OBSERVE|展区全景 37. SELF_CHECK|自身状态 38. LED_GREEN|状态灯\n39. STOP|待机",
+      "elapsed": 0.88,
+      "usage": {
+        "completion_tokens": 349,
+        "prompt_tokens": 1057,
+        "total_tokens": 1406,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.43,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '巡视', '收尾'] | 标准: ['迎接', '引导展区1', '引导展区2', '引导展区3', '告别'] | 匹配: 0/5个阶段"
+        },
+        "actions": {
+          "score": 0.466,
+          "detail": "动作覆盖: 0.12 | 依赖满足: 0.92 (违规2次) | 动作匹配: 0.20"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E01",
+      "category": "E",
+      "instruction": "巡逻西区，如果路被挡住就绕行，绕不过去就回来报告",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻起点 3. WALK|沿巡逻路线 4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机",
+      "elapsed": 0.25,
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 1053,
+        "total_tokens": 1129,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.644,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.23,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['巡逻', '遇障判断', '绕行/返回'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.728,
+          "detail": "动作覆盖: 0.27 | 依赖满足: 0.87 (违规2次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E02",
+      "category": "E",
+      "instruction": "把快递送给302的张工，如果人不在就放门口拍照后回来",
+      "raw_output": "HRI：是 | 阶段：准备→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|玄关 3. WALK|前往玄关\n4. FIND|快递 5. SELF_CHECK|自身状态 6. CARRY|快递\n7. NAVIGATE|张工位置 8. WALK|返回 9. LED_GREEN|状态灯\n10. SPEAK|您的快递 11. DROP|快递放下 12. BOW|致意",
+      "elapsed": 0.32,
+      "usage": {
+        "completion_tokens": 109,
+        "prompt_tokens": 1056,
+        "total_tokens": 1165,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.671,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.19,
+          "detail": "预测: ['准备', '递送'] | 标准: ['前往', '寻找收件人', '递送/存放'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.789,
+          "detail": "动作覆盖: 0.40 | 依赖满足: 0.92 (违规1次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E03",
+      "category": "E",
+      "instruction": "去二楼会议室，楼梯上不去就走坡道",
+      "raw_output": "HRI：否 | 阶段：准备→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|楼梯\n3. WALK|沿楼梯上行\n4. OBSERVE|楼梯坡道状态\n5. SELF_CHECK|自身状态\n6. LED_GREEN|状态灯\n7. NAVIGATE|坡道\n8. WALK|沿坡道上行\n9. RETURN|起点\n10. STOP|待机",
+      "elapsed": 0.3,
+      "usage": {
+        "completion_tokens": 97,
+        "prompt_tokens": 1047,
+        "total_tokens": 1144,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.59,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.15,
+          "detail": "预测: ['准备', '前往', '就位'] | 标准: ['尝试楼梯', '判断', '到达'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.671,
+          "detail": "动作覆盖: 0.57 | 依赖满足: 0.83 (违规2次) | 动作匹配: 0.56"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E04",
+      "category": "E",
+      "instruction": "去巡逻东区，如果中途电量低于20%就先回来充电",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. FIND|电量 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. FIND|电量 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. FIND|电量 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. FIND|电量 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK|前往东区 4. FIND|电量 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|东区 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|东区 3. WALK",
+      "elapsed": 0.97,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1051,
+        "total_tokens": 1435,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.559,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.48,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['出发', '巡逻+检测', '完成/中断充电'] | 匹配: 2/3个阶段"
+        },
+        "actions": {
+          "score": 0.482,
+          "detail": "动作覆盖: 0.27 | 依赖满足: 0.25 (违规12次) | 动作匹配: 1.00"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E05",
+      "category": "E",
+      "instruction": "去储物间找黄色的飞盘，找不到就回来告诉我",
+      "raw_output": "HRI：否 | 阶段：准备→充电→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|储物间 3. WALK|前往储物间\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|待机\n\n",
+      "elapsed": 0.23,
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 1049,
+        "total_tokens": 1120,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.374,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为是）"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['准备', '充电', '收尾'] | 标准: ['搜索', '判断', '带回/回报'] | 匹配: 0/3个阶段"
+        },
+        "actions": {
+          "score": 0.624,
+          "detail": "动作覆盖: 0.18 | 依赖满足: 0.92 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E06",
+      "category": "E",
+      "instruction": "去厨房取东西，遇到人挡路就等一等，超过10秒就绕行",
+      "raw_output": "HRI：是 | 阶段：察觉→等待→绕行\n1. LED_BLUE|状态灯 2. NAVIGATE|厨房 3. WALK|前往厨房 4. FIND|厨房 5. WAVE|打招呼 6. SPEAK|您好，我在厨房 7. BOW|鞠躬 8. LED_GREEN|状态灯\n9. LED_BLUE|状态灯 10. NAVIGATE|门口 11. WALK|前往门口 12. FIND|人 13. WAVE|打招呼 14. SPEAK|抱歉，正在处理您的事情 15. CARRY|递送物品 16. WAIT|原地等待指令 17. LED_GREEN|状态灯\n18. LED_BLUE|状态灯 19. NAVIGATE|门口 20. WALK|前往门口 21. FIND|人 22. WAVE|打招呼 23. SPEAK|抱歉，正在处理您的事情 24. CARRY|递送物品 25. WAIT|原地等待指令 26. LED_GREEN|状态灯\n27. LED_BLUE|状态灯 28. NAVIGATE|门口 29. WALK|前往门口 30. FIND|人 31. WAVE|打招呼 32. SPEAK|抱歉，正在处理您的事情 33. CARRY|递送物品 34. WAIT|原地等待指令 35. LED_GREEN|状态灯\n36. LED_BLUE|状态灯 37. NAVIGATE|门口 38. WALK|前往门口 39. FIND|人 40. WAVE|打招呼 41. SPEAK|抱歉，正在处理您的事情 42. CARRY",
+      "elapsed": 0.97,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1056,
+        "total_tokens": 1440,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.318,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为否）"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['察觉', '等待', '绕行'] | 标准: ['前进', '遇人判断', '等待/绕行'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.459,
+          "detail": "动作覆盖: 0.12 | 依赖满足: 1.00 (违规0次) | 动作匹配: 0.07"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E07",
+      "category": "E",
+      "instruction": "送水到会议室，但如果途中主人叫你，优先响应主人",
+      "raw_output": "HRI：是 | 阶段：察觉→迎接→致意\n1. LED_BLUE|状态灯 2. NAVIGATE|门口 3. WALK|前往门口\n4. FIND|主人 5. WAVE|打招呼 6. SPEAK|主人您好\n7. BOW|鞠躬 8. LED_GREEN|状态灯\n9. NAVIGATE|会议室 10. WALK|前往会议室\n11. OBSERVE|会议室环境 12. SELF_CHECK|自身状态\n13. CARRY|水杯\n14. NAVIGATE|主人位置 15. WALK|返回\n16. SPEAK|主人，您叫\n17. BOW|鞠躬 18. LED_GREEN|状态灯",
+      "elapsed": 0.45,
+      "usage": {
+        "completion_tokens": 164,
+        "prompt_tokens": 1050,
+        "total_tokens": 1214,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.544,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.0,
+          "detail": "预测: ['察觉', '迎接', '致意'] | 标准: ['初始任务', '监听', '切换/继续'] | 匹配: 0/3个阶段"
+        },
+        "actions": {
+          "score": 0.656,
+          "detail": "动作覆盖: 0.45 | 依赖满足: 0.80 (违规3次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E08",
+      "category": "E",
+      "instruction": "去B区3号位，如果那个区域被封锁了就去备用的B区5号位",
+      "raw_output": "HRI：否 | 阶段：准备→前往→就位\n1. LED_BLUE|状态灯 2. NAVIGATE|前往B区 3. WALK|前往B区 4. FIND|B区 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. STOP|开始充电",
+      "elapsed": 0.24,
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 1058,
+        "total_tokens": 1129,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.575,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.17,
+          "detail": "预测: ['准备', '前往', '就位'] | 标准: ['前往主目标', '检测可达性', '切换/到达'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.638,
+          "detail": "动作覆盖: 0.22 | 依赖满足: 0.93 (违规1次) | 动作匹配: 0.67"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E09",
+      "category": "E",
+      "instruction": "把这箱零件送到装配线，如果路上掉了要捡起来再走",
+      "raw_output": "HRI：是 | 阶段：准备→运送→递送\n1. LED_BLUE|状态灯 2. NAVIGATE|装配线 3. WALK|前往装配线\n4. FIND|零件箱 5. SELF_CHECK|自身状态 6. CARRY|零件箱\n7. NAVIGATE|装配线 8. WALK|沿装配线\n9. OBSERVE|零件掉落 10. SELF_CHECK|自身状态 11. CARRY|捡拾掉落零件\n12. NAVIGATE|装配线 13. WALK|沿装配线\n14. OBSERVE|零件掉落 15. SELF_CHECK|自身状态 16. CARRY|捡拾掉落零件\n17. NAVIGATE|装配线 18. WALK|沿装配线\n19. OBSERVE|零件掉落 20. SELF_CHECK|自身状态 21. CARRY|捡拾掉落零件\n22. NAVIGATE|装配线 23. WALK|沿装配线\n24. OBSERVE|零件掉落 25. SELF_CHECK|自身状态 26. CARRY|捡拾掉落零件\n27. NAVIGATE|装配线 28. WALK|沿装配线\n29. OBSERVE|零件掉落 30. SELF_CHECK|自身状态 31. CARRY|捡拾掉落零件\n32. NAVIGATE|装配线 33. WALK|沿装配线\n34. OBSERVE|零件掉落 35. SELF_CHECK|自身状态 36. CARRY|捡拾掉落零件\n37. NAVIGATE|装配线 38. WALK|沿装配线\n39. OBSERVE|零件掉落 ",
+      "elapsed": 0.98,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1052,
+        "total_tokens": 1436,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.418,
+      "breakdown": {
+        "hri": {
+          "score": 0.0,
+          "detail": "错误（应为否）"
+        },
+        "stages": {
+          "score": 0.37,
+          "detail": "预测: ['准备', '运送', '递送'] | 标准: ['装载', '运送', '重新装载/继续', '送达'] | 匹配: 2/4个阶段"
+        },
+        "actions": {
+          "score": 0.542,
+          "detail": "动作覆盖: 0.40 | 依赖满足: 0.87 (违规2次) | 动作匹配: 0.25"
+        }
+      }
+    },
+    {
+      "test_id": "DOG-E10",
+      "category": "E",
+      "instruction": "正常巡逻，但如果检测到烟雾或异常高温立即停止并报警",
+      "raw_output": "HRI：否 | 阶段：准备→巡逻→收尾\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻起点 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻路线 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻路线 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻路线 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻路线 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|待机\n\n1. LED_BLUE|状态灯 2. NAVIGATE|巡逻路线 3. WALK|沿巡逻路线\n4. OBSERVE|环境异常 5. SELF_CHECK|自身状态 6. LED_GREEN|状态灯\n7. RETURN|起点 8. STOP|",
+      "elapsed": 0.98,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1050,
+        "total_tokens": 1434,
+        "prompt_tokens_details": {
+          "cached_tokens": 17
+        }
+      },
+      "score": 0.455,
+      "breakdown": {
+        "hri": {
+          "score": 1.0,
+          "detail": "正确"
+        },
+        "stages": {
+          "score": 0.23,
+          "detail": "预测: ['准备', '巡逻', '收尾'] | 标准: ['巡逻', '持续监测', '正常完成/紧急停止'] | 匹配: 1/3个阶段"
+        },
+        "actions": {
+          "score": 0.413,
+          "detail": "动作覆盖: 0.27 | 依赖满足: 0.08 (违规12次) | 动作匹配: 1.00"
+        }
+      }
+    }
+  ]
+}

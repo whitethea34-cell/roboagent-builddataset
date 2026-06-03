@@ -1,0 +1,8335 @@
+[
+  {
+    "test_id": "DOG-A01",
+    "category": "A",
+    "task_type": "室内巡逻",
+    "difficulty": "easy",
+    "instruction": "绕仓库巡逻一圈，检查是否有异常",
+    "scene": "室内仓库，已知巡逻路线",
+    "hri_expected": false,
+    "stages_expected": [
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "巡逻起点",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "准备",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "沿巡逻路线",
+        "phase": "巡逻",
+        "deps": [
+          1
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "环境异常",
+        "phase": "巡逻",
+        "deps": [
+          2
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡逻",
+        "deps": [
+          3
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [
+          5
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A02",
+    "category": "A",
+    "task_type": "自主充电",
+    "difficulty": "easy",
+    "instruction": "电量低了，自己去充电",
+    "scene": "室内，充电桩位置已知",
+    "hri_expected": false,
+    "stages_expected": [
+      "检查",
+      "前往",
+      "就位"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "SELF_CHECK",
+        "target": "电量",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "NAVIGATE",
+        "target": "充电桩",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 3,
+        "action": "WALK",
+        "target": "前往充电桩",
+        "phase": "前往",
+        "deps": [
+          2
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "BACK",
+        "target": "对准充电桩",
+        "phase": "就位",
+        "deps": [
+          3
+        ],
+        "phase_original": "就位",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "STOP",
+        "target": "开始充电",
+        "phase": "就位",
+        "deps": [],
+        "phase_original": "就位",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "检查",
+      "前往",
+      "就位"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A03",
+    "category": "A",
+    "task_type": "越障",
+    "difficulty": "medium",
+    "instruction": "跳过前方矮栏，到达B点",
+    "scene": "室内训练场，途中有30cm矮栏",
+    "hri_expected": false,
+    "stages_expected": [
+      "观察",
+      "越障",
+      "抵达"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "OBSERVE",
+        "target": "矮栏",
+        "phase": "观察",
+        "deps": [],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "矮栏高度",
+        "phase": "观察",
+        "deps": [
+          1
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "NAVIGATE",
+        "target": "矮栏前",
+        "phase": "观察",
+        "deps": [
+          2
+        ],
+        "phase_original": "观察",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 4,
+        "action": "JUMP",
+        "target": "越过矮栏",
+        "phase": "越障",
+        "deps": [
+          3
+        ],
+        "phase_original": "越障",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 5,
+        "action": "WALK",
+        "target": "继续前进",
+        "phase": "越障",
+        "deps": [
+          4
+        ],
+        "phase_original": "越障",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "B点",
+        "phase": "抵达",
+        "deps": [
+          5
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "抵达",
+        "deps": [],
+        "phase_original": "抵达",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "观察",
+      "越障",
+      "抵达"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A04",
+    "category": "A",
+    "task_type": "绕场跑圈",
+    "difficulty": "medium",
+    "instruction": "绕训练场跑三圈",
+    "scene": "室外训练场，400m一圈",
+    "hri_expected": false,
+    "stages_expected": [
+      "准备",
+      "前往",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "跑道起点",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "准备",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "TROT",
+        "target": "第一圈",
+        "phase": "前往",
+        "deps": [
+          1
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "前往",
+        "deps": [
+          2
+        ],
+        "phase_original": "前往",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "TROT",
+        "target": "第二圈",
+        "phase": "前往",
+        "deps": [
+          3
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "前往",
+        "deps": [
+          4
+        ],
+        "phase_original": "前往",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "TROT",
+        "target": "第三圈",
+        "phase": "前往",
+        "deps": [
+          5
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "准备",
+      "前往",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A05",
+    "category": "A",
+    "task_type": "搜索物品",
+    "difficulty": "medium",
+    "instruction": "在场地上找一下红色的球在哪里",
+    "scene": "训练场散布多个彩色球",
+    "hri_expected": false,
+    "stages_expected": [
+      "搜索",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "搜索起点",
+        "phase": "搜索",
+        "deps": [],
+        "phase_original": "搜索",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "搜索区域",
+        "phase": "搜索",
+        "deps": [
+          1
+        ],
+        "phase_original": "搜索",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "彩色球",
+        "phase": "搜索",
+        "deps": [
+          2
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "FIND",
+        "target": "红球",
+        "phase": "搜索",
+        "deps": [
+          3
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "搜索",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A06",
+    "category": "A",
+    "task_type": "爬楼梯",
+    "difficulty": "medium",
+    "instruction": "上二楼",
+    "scene": "室内楼梯间",
+    "hri_expected": false,
+    "stages_expected": [
+      "接近",
+      "越障",
+      "抵达"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "楼梯口",
+        "phase": "接近",
+        "deps": [],
+        "phase_original": "接近",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "楼梯",
+        "phase": "接近",
+        "deps": [
+          1
+        ],
+        "phase_original": "接近",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "CLIMB",
+        "target": "上楼梯",
+        "phase": "越障",
+        "deps": [
+          2
+        ],
+        "phase_original": "越障",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 4,
+        "action": "NAVIGATE",
+        "target": "二楼平台",
+        "phase": "越障",
+        "deps": [
+          3
+        ],
+        "phase_original": "越障",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 5,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "抵达",
+        "deps": [
+          4
+        ],
+        "phase_original": "抵达",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "抵达",
+        "deps": [],
+        "phase_original": "抵达",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "接近",
+      "越障",
+      "抵达"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A07",
+    "category": "A",
+    "task_type": "避障导航",
+    "difficulty": "medium",
+    "instruction": "绕过地上的杂物，到对面去",
+    "scene": "室内通道，散布纸箱等障碍物",
+    "hri_expected": false,
+    "stages_expected": [
+      "观察",
+      "绕行",
+      "抵达"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "OBSERVE",
+        "target": "障碍物",
+        "phase": "观察",
+        "deps": [],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "障碍物距离",
+        "phase": "观察",
+        "deps": [
+          1
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "NAVIGATE",
+        "target": "通道",
+        "phase": "观察",
+        "deps": [
+          2
+        ],
+        "phase_original": "观察",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "前行",
+        "phase": "绕行",
+        "deps": [
+          3
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "AVOID",
+        "target": "纸箱",
+        "phase": "绕行",
+        "deps": [
+          4
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "目标点",
+        "phase": "抵达",
+        "deps": [
+          5
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "抵达",
+        "deps": [],
+        "phase_original": "抵达",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "观察",
+      "绕行",
+      "抵达"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A08",
+    "category": "A",
+    "task_type": "推门进入",
+    "difficulty": "medium",
+    "instruction": "推开虚掩的门，进房间检查",
+    "scene": "走廊尽头有虚掩的门",
+    "hri_expected": false,
+    "stages_expected": [
+      "接近",
+      "推门",
+      "进入"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "门前",
+        "phase": "接近",
+        "deps": [],
+        "phase_original": "接近",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "门",
+        "phase": "接近",
+        "deps": [
+          1
+        ],
+        "phase_original": "接近",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "PUSH",
+        "target": "门",
+        "phase": "推门",
+        "deps": [
+          2
+        ],
+        "phase_original": "推门",
+        "action_class": "movement_interaction"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "进入房间",
+        "phase": "进入",
+        "deps": [
+          3
+        ],
+        "phase_original": "进入",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "OBSERVE",
+        "target": "房间",
+        "phase": "进入",
+        "deps": [
+          4
+        ],
+        "phase_original": "进入",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "进入",
+        "deps": [],
+        "phase_original": "进入",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "接近",
+      "推门",
+      "进入"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A09",
+    "category": "A",
+    "task_type": "穿越低矮空间",
+    "difficulty": "hard",
+    "instruction": "从桌子下面钻过去，到达另一边",
+    "scene": "室内有大桌子，桌下高度约50cm",
+    "hri_expected": false,
+    "stages_expected": [
+      "观察",
+      "匍匐",
+      "通过",
+      "继续"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "OBSERVE",
+        "target": "桌下空间",
+        "phase": "观察",
+        "deps": [],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "桌下高度",
+        "phase": "观察",
+        "deps": [
+          1
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "CROUCH",
+        "target": "降低姿态",
+        "phase": "匍匐",
+        "deps": [
+          2
+        ],
+        "phase_original": "匍匐",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "穿越桌下",
+        "phase": "通过",
+        "deps": [
+          3
+        ],
+        "phase_original": "通过",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "STAND",
+        "target": "起立",
+        "phase": "继续",
+        "deps": [
+          4
+        ],
+        "phase_original": "继续",
+        "action_class": "posture"
+      },
+      {
+        "id": 6,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "继续",
+        "deps": [
+          5
+        ],
+        "phase_original": "继续",
+        "action_class": "perception"
+      },
+      {
+        "id": 7,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "继续",
+        "deps": [],
+        "phase_original": "继续",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "观察",
+      "匍匐",
+      "通过",
+      "继续"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-A10",
+    "category": "A",
+    "task_type": "多点巡查",
+    "difficulty": "hard",
+    "instruction": "依次巡查坐标P1、P2、P3，每个点做一次状态自检",
+    "scene": "室外场地，三个坐标点分散",
+    "hri_expected": false,
+    "stages_expected": [
+      "准备",
+      "巡查",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "P1",
+        "phase": "巡查",
+        "deps": [],
+        "phase_original": "P1巡查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往P1",
+        "phase": "巡查",
+        "deps": [
+          1
+        ],
+        "phase_original": "P1巡查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡查",
+        "deps": [
+          2
+        ],
+        "phase_original": "P1巡查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "NAVIGATE",
+        "target": "P2",
+        "phase": "巡查",
+        "deps": [],
+        "phase_original": "P2巡查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 5,
+        "action": "TROT",
+        "target": "前往P2",
+        "phase": "巡查",
+        "deps": [
+          4
+        ],
+        "phase_original": "P2巡查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡查",
+        "deps": [
+          5
+        ],
+        "phase_original": "P2巡查",
+        "action_class": "perception"
+      },
+      {
+        "id": 7,
+        "action": "NAVIGATE",
+        "target": "P3",
+        "phase": "巡查",
+        "deps": [],
+        "phase_original": "P3巡查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 8,
+        "action": "WALK",
+        "target": "前往P3",
+        "phase": "巡查",
+        "deps": [
+          7
+        ],
+        "phase_original": "P3巡查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 9,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡查",
+        "deps": [
+          8
+        ],
+        "phase_original": "P3巡查",
+        "action_class": "perception"
+      },
+      {
+        "id": 10,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 11,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [
+          10
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "准备",
+      "P1巡查",
+      "P2巡查",
+      "P3巡查",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B01",
+    "category": "B",
+    "task_type": "取快递递送",
+    "difficulty": "easy",
+    "instruction": "把门口的快递取来给我",
+    "scene": "家庭客厅，快递在玄关",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "玄关",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往玄关",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "快递",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "快递",
+        "phase": "运送",
+        "deps": [
+          3
+        ],
+        "phase_original": "运送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "主人位置",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "返回",
+        "phase": "运送",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "SPEAK",
+        "target": "您的快递",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "快递放下",
+        "phase": "递送",
+        "deps": [
+          7
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B02",
+    "category": "B",
+    "task_type": "送水给客人",
+    "difficulty": "easy",
+    "instruction": "给客厅的客人送瓶水过去",
+    "scene": "家庭环境，厨房有瓶装水",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "厨房",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往厨房",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "瓶装水",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "瓶装水",
+        "phase": "运送",
+        "deps": [
+          3
+        ],
+        "phase_original": "运送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "客厅客人位置",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往客厅",
+        "phase": "运送",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "SPEAK",
+        "target": "请用水",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "水",
+        "phase": "递送",
+        "deps": [
+          7
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B03",
+    "category": "B",
+    "task_type": "取拖鞋",
+    "difficulty": "easy",
+    "instruction": "把拖鞋叼过来",
+    "scene": "家庭玄关，拖鞋在鞋架上",
+    "hri_expected": true,
+    "stages_expected": [
+      "搜索",
+      "取物",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "鞋架",
+        "phase": "搜索",
+        "deps": [],
+        "phase_original": "搜索",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往鞋架",
+        "phase": "搜索",
+        "deps": [
+          1
+        ],
+        "phase_original": "搜索",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "拖鞋",
+        "phase": "搜索",
+        "deps": [
+          2
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "拖鞋",
+        "phase": "取物",
+        "deps": [
+          3
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "主人",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "返回",
+        "phase": "递送",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "递送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "DROP",
+        "target": "拖鞋",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 8,
+        "action": "WAVE",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          7
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "搜索",
+      "取物",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B04",
+    "category": "B",
+    "task_type": "送文件",
+    "difficulty": "medium",
+    "instruction": "把这份文件送给302室的张工",
+    "scene": "办公楼，文件在工位上",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "前往",
+      "递送",
+      "返回"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "CARRY",
+        "target": "文件",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 2,
+        "action": "NAVIGATE",
+        "target": "302室",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 3,
+        "action": "WALK",
+        "target": "前往302室",
+        "phase": "前往",
+        "deps": [
+          1,
+          2
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "FIND",
+        "target": "张工",
+        "phase": "递送",
+        "deps": [
+          3
+        ],
+        "phase_original": "递送",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "SPEAK",
+        "target": "您的文件",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 6,
+        "action": "DROP",
+        "target": "文件",
+        "phase": "递送",
+        "deps": [
+          5
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 7,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          6
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      },
+      {
+        "id": 8,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "返回",
+        "deps": [
+          7
+        ],
+        "phase_original": "返回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 9,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "返回",
+        "deps": [
+          8
+        ],
+        "phase_original": "返回",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "前往",
+      "递送",
+      "返回"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B05",
+    "category": "B",
+    "task_type": "送防晒用品",
+    "difficulty": "medium",
+    "instruction": "把防晒霜送给在花园里浇水的人",
+    "scene": "别墅，花园在室外，防晒霜在储物间",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "前往",
+      "搜索",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "储物间",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往储物间",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "防晒霜",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "防晒霜",
+        "phase": "前往",
+        "deps": [
+          3
+        ],
+        "phase_original": "前往",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "花园",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往花园",
+        "phase": "前往",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "浇水人",
+        "phase": "搜索",
+        "deps": [
+          6
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "SPEAK",
+        "target": "您的防晒霜",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 9,
+        "action": "DROP",
+        "target": "防晒霜",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 10,
+        "action": "WAVE",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          9
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "前往",
+      "搜索",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B06",
+    "category": "B",
+    "task_type": "送工具箱",
+    "difficulty": "medium",
+    "instruction": "把工具箱送到地下车库正在修车的师傅那里",
+    "scene": "地下车库，工具箱在杂物间",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "前往",
+      "搜索",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "杂物间",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往杂物间",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "工具箱",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "工具箱",
+        "phase": "前往",
+        "deps": [
+          3
+        ],
+        "phase_original": "前往",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "地下车库",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往车库",
+        "phase": "前往",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "修车师傅",
+        "phase": "搜索",
+        "deps": [
+          6
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "BEEP",
+        "target": "提示音",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 9,
+        "action": "DROP",
+        "target": "工具箱",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 10,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          9
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "前往",
+      "搜索",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B07",
+    "category": "B",
+    "task_type": "送药和水",
+    "difficulty": "medium",
+    "instruction": "把药和水送到卧室，病人需要吃药",
+    "scene": "家庭，药在客厅药箱，水在厨房",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "厨房",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往厨房",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "水杯",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "水杯",
+        "phase": "取物",
+        "deps": [
+          3
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "客厅药箱",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往客厅",
+        "phase": "取物",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "药",
+        "phase": "取物",
+        "deps": [
+          6
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "CARRY",
+        "target": "药和水",
+        "phase": "运送",
+        "deps": [
+          7
+        ],
+        "phase_original": "运送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "卧室",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往卧室",
+        "phase": "运送",
+        "deps": [
+          8,
+          9
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "FIND",
+        "target": "病人",
+        "phase": "递送",
+        "deps": [
+          10
+        ],
+        "phase_original": "递送",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SPEAK",
+        "target": "请吃药",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 13,
+        "action": "DROP",
+        "target": "药和水",
+        "phase": "递送",
+        "deps": [
+          12
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 14,
+        "action": "WAIT",
+        "target": "等待确认",
+        "phase": "递送",
+        "deps": [
+          13
+        ],
+        "phase_original": "递送",
+        "action_class": "standby"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B08",
+    "category": "B",
+    "task_type": "送玩具给小朋友",
+    "difficulty": "medium",
+    "instruction": "把那边的玩具球叼给小朋友",
+    "scene": "家庭客厅，玩具球在地上",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "搜索",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "玩具区",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往玩具区",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "玩具球",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "玩具球",
+        "phase": "取物",
+        "deps": [
+          3
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "儿童房",
+        "phase": "搜索",
+        "deps": [],
+        "phase_original": "搜索",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往儿童房",
+        "phase": "搜索",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "搜索",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "小朋友",
+        "phase": "搜索",
+        "deps": [
+          6
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "玩具球",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "WAVE",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      },
+      {
+        "id": 10,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          9
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "搜索",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B09",
+    "category": "B",
+    "task_type": "多包裹递送",
+    "difficulty": "hard",
+    "instruction": "把这个包裹送到前台，如果有多个包裹一并带去",
+    "scene": "办公楼，多个包裹在收发室",
+    "hri_expected": true,
+    "stages_expected": [
+      "检查",
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "收发室",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往收发室",
+        "phase": "检查",
+        "deps": [
+          1
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "包裹数量",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "FIND",
+        "target": "所有包裹",
+        "phase": "取物",
+        "deps": [
+          3
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "CARRY",
+        "target": "包裹",
+        "phase": "取物",
+        "deps": [
+          4
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "前台",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "WALK",
+        "target": "前往前台",
+        "phase": "运送",
+        "deps": [
+          5,
+          6
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 8,
+        "action": "BEEP",
+        "target": "提示音",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 9,
+        "action": "DROP",
+        "target": "包裹",
+        "phase": "递送",
+        "deps": [
+          8
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 10,
+        "action": "SPEAK",
+        "target": "包裹已送到",
+        "phase": "递送",
+        "deps": [
+          9
+        ],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 11,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "递送",
+        "deps": [
+          10
+        ],
+        "phase_original": "递送",
+        "action_class": "movement_nav"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "检查",
+      "取物",
+      "运送",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-B10",
+    "category": "B",
+    "task_type": "多地取物递送",
+    "difficulty": "hard",
+    "instruction": "毛巾和水都送到操场上给跑步的人",
+    "scene": "学校操场，毛巾和水分别在器材室和饮水处",
+    "hri_expected": true,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "搜索",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "器材室",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往器材室",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "毛巾",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CARRY",
+        "target": "毛巾",
+        "phase": "取物",
+        "deps": [
+          3
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "饮水处",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往饮水处",
+        "phase": "取物",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "水",
+        "phase": "取物",
+        "deps": [
+          6
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "CARRY",
+        "target": "毛巾和水",
+        "phase": "运送",
+        "deps": [
+          7
+        ],
+        "phase_original": "运送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "操场",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "TROT",
+        "target": "前往操场",
+        "phase": "运送",
+        "deps": [
+          8,
+          9
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "FIND",
+        "target": "跑步者",
+        "phase": "搜索",
+        "deps": [
+          10
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SPEAK",
+        "target": "请补水",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 13,
+        "action": "DROP",
+        "target": "毛巾和水",
+        "phase": "递送",
+        "deps": [
+          12
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 14,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          13
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "运送",
+      "搜索",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C01",
+    "category": "C",
+    "task_type": "多房间巡逻",
+    "difficulty": "medium",
+    "instruction": "巡逻一楼所有房间，如果有异常拍照回来报告",
+    "scene": "办公楼一层，3个房间",
+    "hri_expected": false,
+    "stages_expected": [
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "房间1",
+        "phase": "巡逻",
+        "deps": [],
+        "phase_original": "巡逻",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往房间1",
+        "phase": "巡逻",
+        "deps": [
+          1
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "房间1",
+        "phase": "巡逻",
+        "deps": [
+          2
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡逻",
+        "deps": [
+          3
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "房间2",
+        "phase": "巡逻",
+        "deps": [],
+        "phase_original": "巡逻",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往房间2",
+        "phase": "巡逻",
+        "deps": [
+          5
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "OBSERVE",
+        "target": "房间2",
+        "phase": "巡逻",
+        "deps": [
+          6
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡逻",
+        "deps": [
+          7
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "房间3",
+        "phase": "巡逻",
+        "deps": [],
+        "phase_original": "巡逻",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往房间3",
+        "phase": "巡逻",
+        "deps": [
+          9
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "OBSERVE",
+        "target": "房间3",
+        "phase": "巡逻",
+        "deps": [
+          10
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡逻",
+        "deps": [
+          11
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 13,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 14,
+        "action": "SPEAK",
+        "target": "巡逻完成",
+        "phase": "收尾",
+        "deps": [
+          13
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C02",
+    "category": "C",
+    "task_type": "设备巡检拍照",
+    "difficulty": "medium",
+    "instruction": "去车间检查设备A、B、C的运行状态，每个拍照一张",
+    "scene": "工厂车间，三台设备分布在不同位置",
+    "hri_expected": false,
+    "stages_expected": [
+      "前往",
+      "检查",
+      "返回"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "设备A",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往设备A",
+        "phase": "前往",
+        "deps": [
+          1
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "设备A运行状态",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "CAPTURE",
+        "target": "设备A照片",
+        "phase": "检查",
+        "deps": [
+          3
+        ],
+        "phase_original": "检查",
+        "action_class": "perception_capture"
+      },
+      {
+        "id": 5,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "检查",
+        "deps": [
+          4
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "设备B",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "WALK",
+        "target": "前往设备B",
+        "phase": "前往",
+        "deps": [
+          6
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 8,
+        "action": "OBSERVE",
+        "target": "设备B运行状态",
+        "phase": "检查",
+        "deps": [
+          7
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "CAPTURE",
+        "target": "设备B照片",
+        "phase": "检查",
+        "deps": [
+          8
+        ],
+        "phase_original": "检查",
+        "action_class": "perception_capture"
+      },
+      {
+        "id": 10,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "检查",
+        "deps": [
+          9
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 11,
+        "action": "NAVIGATE",
+        "target": "设备C",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 12,
+        "action": "WALK",
+        "target": "前往设备C",
+        "phase": "前往",
+        "deps": [
+          11
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 13,
+        "action": "OBSERVE",
+        "target": "设备C运行状态",
+        "phase": "检查",
+        "deps": [
+          12
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 14,
+        "action": "CAPTURE",
+        "target": "设备C照片",
+        "phase": "检查",
+        "deps": [
+          13
+        ],
+        "phase_original": "检查",
+        "action_class": "perception_capture"
+      },
+      {
+        "id": 15,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "检查",
+        "deps": [
+          14
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 16,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "返回",
+        "deps": [],
+        "phase_original": "返回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 17,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "返回",
+        "deps": [
+          16
+        ],
+        "phase_original": "返回",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "前往",
+      "检查",
+      "返回"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C03",
+    "category": "C",
+    "task_type": "多地递送",
+    "difficulty": "hard",
+    "instruction": "包裹A送到301室，包裹B送到505室，送完回报",
+    "scene": "办公楼，两个包裹在不同楼层",
+    "hri_expected": false,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "收发室",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往收发室",
+        "phase": "取物",
+        "deps": [
+          1
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "CARRY",
+        "target": "包裹A和包裹B",
+        "phase": "取物",
+        "deps": [
+          2
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 4,
+        "action": "NAVIGATE",
+        "target": "301室",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "送A",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 5,
+        "action": "CLIMB",
+        "target": "上楼",
+        "phase": "运送",
+        "deps": [
+          3,
+          4
+        ],
+        "phase_original": "送A",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往301室",
+        "phase": "运送",
+        "deps": [
+          5
+        ],
+        "phase_original": "送A",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "FIND",
+        "target": "收件人",
+        "phase": "运送",
+        "deps": [
+          6
+        ],
+        "phase_original": "送A",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "包裹A",
+        "phase": "运送",
+        "deps": [
+          7
+        ],
+        "phase_original": "送A",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "505室",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "送B",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "CLIMB",
+        "target": "上楼",
+        "phase": "运送",
+        "deps": [
+          9
+        ],
+        "phase_original": "送B",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 11,
+        "action": "WALK",
+        "target": "前往505室",
+        "phase": "运送",
+        "deps": [
+          10
+        ],
+        "phase_original": "送B",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 12,
+        "action": "FIND",
+        "target": "收件人",
+        "phase": "运送",
+        "deps": [
+          11
+        ],
+        "phase_original": "送B",
+        "action_class": "perception"
+      },
+      {
+        "id": 13,
+        "action": "DROP",
+        "target": "包裹B",
+        "phase": "运送",
+        "deps": [
+          12
+        ],
+        "phase_original": "送B",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 14,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 15,
+        "action": "SPEAK",
+        "target": "全部送达",
+        "phase": "收尾",
+        "deps": [
+          14
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "取物",
+      "送A",
+      "送B",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C04",
+    "category": "C",
+    "task_type": "充电后巡逻",
+    "difficulty": "medium",
+    "instruction": "先回充电桩补电，然后再去巡逻南区",
+    "scene": "室外场地，充电桩在北区",
+    "hri_expected": false,
+    "stages_expected": [
+      "充电",
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "SELF_CHECK",
+        "target": "电量",
+        "phase": "充电",
+        "deps": [],
+        "phase_original": "充电",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "NAVIGATE",
+        "target": "充电桩",
+        "phase": "充电",
+        "deps": [
+          1
+        ],
+        "phase_original": "充电",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 3,
+        "action": "WALK",
+        "target": "前往充电桩",
+        "phase": "充电",
+        "deps": [
+          2
+        ],
+        "phase_original": "充电",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "BACK",
+        "target": "对准充电桩",
+        "phase": "充电",
+        "deps": [
+          3
+        ],
+        "phase_original": "充电",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "WAIT",
+        "target": "充电中",
+        "phase": "充电",
+        "deps": [
+          4
+        ],
+        "phase_original": "充电",
+        "action_class": "standby"
+      },
+      {
+        "id": 6,
+        "action": "SELF_CHECK",
+        "target": "电量确认",
+        "phase": "充电",
+        "deps": [
+          5
+        ],
+        "phase_original": "充电",
+        "action_class": "perception"
+      },
+      {
+        "id": 7,
+        "action": "NAVIGATE",
+        "target": "南区入口",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "准备",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 8,
+        "action": "TROT",
+        "target": "前往南区",
+        "phase": "巡逻",
+        "deps": [
+          7
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 9,
+        "action": "OBSERVE",
+        "target": "南区环境",
+        "phase": "巡逻",
+        "deps": [
+          8
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "沿巡逻路线",
+        "phase": "巡逻",
+        "deps": [
+          9
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "巡逻",
+        "deps": [
+          10
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "充电",
+      "准备",
+      "巡逻",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C05",
+    "category": "C",
+    "task_type": "搜索丢失物品",
+    "difficulty": "hard",
+    "instruction": "我的钥匙可能掉在训练场了，去找找，找到带回来，找不到也回来告诉我",
+    "scene": "室外训练场，面积较大",
+    "hri_expected": true,
+    "stages_expected": [
+      "搜索",
+      "判断",
+      "带回",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "训练场",
+        "phase": "搜索",
+        "deps": [],
+        "phase_original": "搜索",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "TROT",
+        "target": "搜索训练场",
+        "phase": "搜索",
+        "deps": [
+          1
+        ],
+        "phase_original": "搜索",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "地面",
+        "phase": "搜索",
+        "deps": [
+          2
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "FIND",
+        "target": "钥匙",
+        "phase": "搜索",
+        "deps": [
+          3
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "CARRY",
+        "target": "钥匙",
+        "phase": "带回",
+        "deps": [
+          4
+        ],
+        "phase_original": "带回",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 6,
+        "action": "RETURN",
+        "target": "主人处",
+        "phase": "带回",
+        "deps": [
+          5
+        ],
+        "phase_original": "带回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "SPEAK",
+        "target": "找到了",
+        "phase": "带回",
+        "deps": [
+          6
+        ],
+        "phase_original": "带回",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "钥匙",
+        "phase": "带回",
+        "deps": [
+          7
+        ],
+        "phase_original": "带回",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "RETURN",
+        "target": "主人处",
+        "phase": "收尾",
+        "deps": [
+          4
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "SPEAK",
+        "target": "未找到",
+        "phase": "收尾",
+        "deps": [
+          9
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 11,
+        "action": "SHAKE_HEAD",
+        "target": "表示遗憾",
+        "phase": "收尾",
+        "deps": [
+          10
+        ],
+        "phase_original": "收尾",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "分支题：找到走[6-10]，找不到走[11-14]。允许模型输出条件分支逻辑。",
+    "branch_paths": [
+      {
+        "name": "找到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "训练场",
+            "phase": "搜索",
+            "deps": [],
+            "phase_original": "搜索",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "TROT",
+            "target": "搜索训练场",
+            "phase": "搜索",
+            "deps": [
+              1
+            ],
+            "phase_original": "搜索",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "地面",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "FIND",
+            "target": "钥匙",
+            "phase": "搜索",
+            "deps": [
+              3
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "CARRY",
+            "target": "钥匙",
+            "phase": "带回",
+            "deps": [
+              4
+            ],
+            "phase_original": "带回",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 6,
+            "action": "RETURN",
+            "target": "主人处",
+            "phase": "带回",
+            "deps": [
+              5
+            ],
+            "phase_original": "带回",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "找到了",
+            "phase": "带回",
+            "deps": [
+              6
+            ],
+            "phase_original": "带回",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 8,
+            "action": "DROP",
+            "target": "钥匙",
+            "phase": "带回",
+            "deps": [
+              7
+            ],
+            "phase_original": "带回",
+            "action_class": "object_handle"
+          }
+        ]
+      },
+      {
+        "name": "找不到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "训练场",
+            "phase": "搜索",
+            "deps": [],
+            "phase_original": "搜索",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "TROT",
+            "target": "搜索训练场",
+            "phase": "搜索",
+            "deps": [
+              1
+            ],
+            "phase_original": "搜索",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "地面",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "FIND",
+            "target": "钥匙",
+            "phase": "搜索",
+            "deps": [
+              3
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "RETURN",
+            "target": "主人处",
+            "phase": "收尾",
+            "deps": [
+              4
+            ],
+            "phase_original": "收尾",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 6,
+            "action": "SPEAK",
+            "target": "未找到",
+            "phase": "收尾",
+            "deps": [
+              5
+            ],
+            "phase_original": "收尾",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 7,
+            "action": "SHAKE_HEAD",
+            "target": "表示遗憾",
+            "phase": "收尾",
+            "deps": [
+              6
+            ],
+            "phase_original": "收尾",
+            "action_class": "social"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "搜索",
+      "判断",
+      "带回",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C06",
+    "category": "C",
+    "task_type": "引导+送水",
+    "difficulty": "hard",
+    "instruction": "把来访的李总引导到3号会议室，然后去茶水间取水送过去",
+    "scene": "办公楼大厅→会议室→茶水间",
+    "hri_expected": true,
+    "stages_expected": [
+      "迎接",
+      "引导",
+      "取物",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "大厅",
+        "phase": "迎接",
+        "deps": [],
+        "phase_original": "迎接",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往大厅",
+        "phase": "迎接",
+        "deps": [
+          1
+        ],
+        "phase_original": "迎接",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "李总",
+        "phase": "迎接",
+        "deps": [
+          2
+        ],
+        "phase_original": "迎接",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "迎接",
+        "deps": [
+          3
+        ],
+        "phase_original": "迎接",
+        "action_class": "social"
+      },
+      {
+        "id": 5,
+        "action": "SPEAK",
+        "target": "请跟我来",
+        "phase": "迎接",
+        "deps": [
+          4
+        ],
+        "phase_original": "迎接",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "3号会议室",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "WALK",
+        "target": "引导李总",
+        "phase": "引导",
+        "deps": [
+          5,
+          6
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 8,
+        "action": "WAIT",
+        "target": "等待就座",
+        "phase": "引导",
+        "deps": [
+          7
+        ],
+        "phase_original": "引导",
+        "action_class": "standby"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "茶水间",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往茶水间",
+        "phase": "取物",
+        "deps": [
+          9
+        ],
+        "phase_original": "取物",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "FIND",
+        "target": "水",
+        "phase": "取物",
+        "deps": [
+          10
+        ],
+        "phase_original": "取物",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "CARRY",
+        "target": "水",
+        "phase": "取物",
+        "deps": [
+          11
+        ],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 13,
+        "action": "NAVIGATE",
+        "target": "3号会议室",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 14,
+        "action": "WALK",
+        "target": "返回会议室",
+        "phase": "递送",
+        "deps": [
+          12,
+          13
+        ],
+        "phase_original": "递送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 15,
+        "action": "SPEAK",
+        "target": "请用水",
+        "phase": "递送",
+        "deps": [
+          14
+        ],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 16,
+        "action": "DROP",
+        "target": "水",
+        "phase": "递送",
+        "deps": [
+          15
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 17,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [],
+        "phase_original": "递送",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "迎接",
+      "引导",
+      "取物",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C07",
+    "category": "C",
+    "task_type": "晨间安全巡检",
+    "difficulty": "hard",
+    "instruction": "早上例行：检查大门是否关好、窗户是否关闭、电源是否正常，全部确认后回报",
+    "scene": "小型办公室，下班后无人",
+    "hri_expected": false,
+    "stages_expected": [
+      "检查",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "大门",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往大门",
+        "phase": "检查",
+        "deps": [
+          1
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "大门状态",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          3
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "窗户",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往窗户",
+        "phase": "检查",
+        "deps": [
+          5
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "OBSERVE",
+        "target": "窗户状态",
+        "phase": "检查",
+        "deps": [
+          6
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          7
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "配电箱",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往配电箱",
+        "phase": "检查",
+        "deps": [
+          9
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "OBSERVE",
+        "target": "电源状态",
+        "phase": "检查",
+        "deps": [
+          10
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          11
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 13,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 14,
+        "action": "SPEAK",
+        "target": "检查完成一切正常",
+        "phase": "收尾",
+        "deps": [
+          13
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 15,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [
+          14
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "检查",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C08",
+    "category": "C",
+    "task_type": "表演后引导",
+    "difficulty": "hard",
+    "instruction": "在中庭表演一段舞蹈，结束后引导观众从东门离场",
+    "scene": "商场中庭，观众围成半圈",
+    "hri_expected": true,
+    "stages_expected": [
+      "就位",
+      "表演",
+      "引导"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "中庭中心",
+        "phase": "就位",
+        "deps": [],
+        "phase_original": "就位",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往中庭",
+        "phase": "就位",
+        "deps": [
+          1
+        ],
+        "phase_original": "就位",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "SPIN",
+        "target": "360度旋转亮相",
+        "phase": "表演",
+        "deps": [
+          2
+        ],
+        "phase_original": "表演",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "DANCE",
+        "target": "舞蹈表演",
+        "phase": "表演",
+        "deps": [
+          3
+        ],
+        "phase_original": "表演",
+        "action_class": "entertain"
+      },
+      {
+        "id": 5,
+        "action": "BOW",
+        "target": "谢幕",
+        "phase": "表演",
+        "deps": [
+          4
+        ],
+        "phase_original": "表演",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "SPEAK",
+        "target": "请从东门离场",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 7,
+        "action": "NAVIGATE",
+        "target": "东门",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 8,
+        "action": "WALK",
+        "target": "引导观众",
+        "phase": "引导",
+        "deps": [
+          6,
+          7
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 9,
+        "action": "WAVE",
+        "target": "告别",
+        "phase": "引导",
+        "deps": [
+          8
+        ],
+        "phase_original": "引导",
+        "action_class": "social"
+      },
+      {
+        "id": 10,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "就位",
+      "表演",
+      "引导"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C09",
+    "category": "C",
+    "task_type": "开馆前检查",
+    "difficulty": "hard",
+    "instruction": "开馆前检查：检查走廊照明、确认消防通道畅通、确认卫生间无异味",
+    "scene": "展览馆，开馆前30分钟",
+    "hri_expected": false,
+    "stages_expected": [
+      "检查",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "走廊",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往走廊",
+        "phase": "检查",
+        "deps": [
+          1
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "照明状态",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          3
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "消防通道",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往消防通道",
+        "phase": "检查",
+        "deps": [
+          5
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "OBSERVE",
+        "target": "通道畅通情况",
+        "phase": "检查",
+        "deps": [
+          6
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          7
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "卫生间",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往卫生间",
+        "phase": "检查",
+        "deps": [
+          9
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "OBSERVE",
+        "target": "卫生状况",
+        "phase": "检查",
+        "deps": [
+          10
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SELF_CHECK",
+        "target": "检查结果",
+        "phase": "检查",
+        "deps": [
+          11
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 13,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 14,
+        "action": "SPEAK",
+        "target": "开馆检查完毕",
+        "phase": "收尾",
+        "deps": [
+          13
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 15,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "收尾",
+        "deps": [
+          14
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "检查",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-C10",
+    "category": "C",
+    "task_type": "紧急疏散",
+    "difficulty": "hard",
+    "instruction": "模拟火警：检测到警报后，逐个房间检查是否有人，引导所有人到集合点",
+    "scene": "办公楼，消防演习",
+    "hri_expected": true,
+    "stages_expected": [
+      "响应",
+      "检查",
+      "引导",
+      "确认清场"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "房间1",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "TROT",
+        "target": "快速前往房间1",
+        "phase": "检查",
+        "deps": [
+          1
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "是否有人员",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SPEAK",
+        "target": "请撤离",
+        "phase": "检查",
+        "deps": [
+          3
+        ],
+        "phase_original": "检查",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "房间2",
+        "phase": "检查",
+        "deps": [],
+        "phase_original": "检查",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "TROT",
+        "target": "快速前往房间2",
+        "phase": "检查",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "检查",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "OBSERVE",
+        "target": "是否有人员",
+        "phase": "检查",
+        "deps": [
+          6
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "SPEAK",
+        "target": "请撤离",
+        "phase": "检查",
+        "deps": [
+          7
+        ],
+        "phase_original": "检查",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "集合点",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往集合点",
+        "phase": "引导",
+        "deps": [
+          8,
+          9
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "OBSERVE",
+        "target": "人员清点",
+        "phase": "确认清场",
+        "deps": [
+          10
+        ],
+        "phase_original": "确认清场",
+        "action_class": "perception"
+      },
+      {
+        "id": 12,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "确认清场",
+        "deps": [
+          11
+        ],
+        "phase_original": "确认清场",
+        "action_class": "perception"
+      },
+      {
+        "id": 13,
+        "action": "SPEAK",
+        "target": "全员到齐",
+        "phase": "确认清场",
+        "deps": [],
+        "phase_original": "确认清场",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 14,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "确认清场",
+        "deps": [
+          13
+        ],
+        "phase_original": "确认清场",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "响应",
+      "检查",
+      "引导",
+      "确认清场"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D01",
+    "category": "D",
+    "task_type": "迎接客人",
+    "difficulty": "easy",
+    "instruction": "有客人到门口了，去迎接一下",
+    "scene": "家庭/办公室门口",
+    "hri_expected": true,
+    "stages_expected": [
+      "察觉",
+      "迎接",
+      "致意"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "门口",
+        "phase": "迎接",
+        "deps": [],
+        "phase_original": "迎接",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往门口",
+        "phase": "迎接",
+        "deps": [
+          1
+        ],
+        "phase_original": "迎接",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "客人",
+        "phase": "迎接",
+        "deps": [
+          2
+        ],
+        "phase_original": "迎接",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "致意",
+        "deps": [
+          3
+        ],
+        "phase_original": "致意",
+        "action_class": "social"
+      },
+      {
+        "id": 5,
+        "action": "SPEAK",
+        "target": "欢迎",
+        "phase": "致意",
+        "deps": [
+          4
+        ],
+        "phase_original": "致意",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 6,
+        "action": "BOW",
+        "target": "鞠躬",
+        "phase": "致意",
+        "deps": [
+          5
+        ],
+        "phase_original": "致意",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "察觉",
+      "迎接",
+      "致意"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D02",
+    "category": "D",
+    "task_type": "跟小朋友玩",
+    "difficulty": "easy",
+    "instruction": "跟小主人玩一会儿",
+    "scene": "家庭客厅，小朋友在玩耍",
+    "hri_expected": true,
+    "stages_expected": [
+      "接近",
+      "互动",
+      "收尾"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "小朋友位置",
+        "phase": "接近",
+        "deps": [],
+        "phase_original": "接近",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往小朋友处",
+        "phase": "接近",
+        "deps": [
+          1
+        ],
+        "phase_original": "接近",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "互动",
+        "deps": [
+          2
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 4,
+        "action": "SPIN",
+        "target": "转圈玩耍",
+        "phase": "互动",
+        "deps": [
+          3
+        ],
+        "phase_original": "互动",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "SHAKE",
+        "target": "握手互动",
+        "phase": "互动",
+        "deps": [
+          4
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "BOW",
+        "target": "结束",
+        "phase": "收尾",
+        "deps": [
+          5
+        ],
+        "phase_original": "收尾",
+        "action_class": "social"
+      },
+      {
+        "id": 7,
+        "action": "WAIT",
+        "target": "等待",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "standby"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "接近",
+      "互动",
+      "收尾"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D03",
+    "category": "D",
+    "task_type": "迎接主人回家",
+    "difficulty": "easy",
+    "instruction": "主人回来了，去门口迎接",
+    "scene": "家庭玄关",
+    "hri_expected": true,
+    "stages_expected": [
+      "察觉",
+      "迎接",
+      "互动"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "玄关",
+        "phase": "迎接",
+        "deps": [],
+        "phase_original": "迎接",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "TROT",
+        "target": "快速前往",
+        "phase": "迎接",
+        "deps": [
+          1
+        ],
+        "phase_original": "迎接",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "互动",
+        "deps": [
+          2
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 4,
+        "action": "SPIN",
+        "target": "转圈表达兴奋",
+        "phase": "互动",
+        "deps": [
+          3
+        ],
+        "phase_original": "互动",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "SHAKE",
+        "target": "握手",
+        "phase": "互动",
+        "deps": [
+          4
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "SPEAK",
+        "target": "欢迎回家",
+        "phase": "互动",
+        "deps": [
+          5
+        ],
+        "phase_original": "互动",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "察觉",
+      "迎接",
+      "互动"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D04",
+    "category": "D",
+    "task_type": "展厅迎宾",
+    "difficulty": "medium",
+    "instruction": "在展厅入口当迎宾，有人来就打招呼",
+    "scene": "展厅入口",
+    "hri_expected": true,
+    "stages_expected": [
+      "就位",
+      "检查",
+      "迎接"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "WAIT",
+        "target": "等待访客",
+        "phase": "就位",
+        "deps": [],
+        "phase_original": "就位",
+        "action_class": "standby"
+      },
+      {
+        "id": 2,
+        "action": "OBSERVE",
+        "target": "入口方向",
+        "phase": "检查",
+        "deps": [
+          1
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "来访者",
+        "phase": "检查",
+        "deps": [
+          2
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "走向来访者",
+        "phase": "迎接",
+        "deps": [],
+        "phase_original": "迎接",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "迎接",
+        "deps": [
+          4
+        ],
+        "phase_original": "迎接",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "SPEAK",
+        "target": "欢迎参观",
+        "phase": "迎接",
+        "deps": [
+          5
+        ],
+        "phase_original": "迎接",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 7,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "迎接",
+        "deps": [
+          6
+        ],
+        "phase_original": "迎接",
+        "action_class": "social"
+      },
+      {
+        "id": 8,
+        "action": "WAIT",
+        "target": "继续待机",
+        "phase": "就位",
+        "deps": [],
+        "phase_original": "就位",
+        "action_class": "standby"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "就位",
+      "检查",
+      "迎接"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D05",
+    "category": "D",
+    "task_type": "舞蹈表演",
+    "difficulty": "medium",
+    "instruction": "来，给大家表演一段舞蹈",
+    "scene": "客厅/表演场地，观众在前方",
+    "hri_expected": true,
+    "stages_expected": [
+      "就位",
+      "表演",
+      "致意"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "表演位",
+        "phase": "就位",
+        "deps": [],
+        "phase_original": "就位",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往表演位",
+        "phase": "就位",
+        "deps": [
+          1
+        ],
+        "phase_original": "就位",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "SPIN",
+        "target": "亮相",
+        "phase": "表演",
+        "deps": [
+          2
+        ],
+        "phase_original": "表演",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "DANCE",
+        "target": "舞蹈动作",
+        "phase": "表演",
+        "deps": [
+          3
+        ],
+        "phase_original": "表演",
+        "action_class": "entertain"
+      },
+      {
+        "id": 5,
+        "action": "BOW",
+        "target": "谢幕",
+        "phase": "致意",
+        "deps": [
+          4
+        ],
+        "phase_original": "致意",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "WAVE",
+        "target": "向观众致意",
+        "phase": "致意",
+        "deps": [
+          5
+        ],
+        "phase_original": "致意",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "就位",
+      "表演",
+      "致意"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D06",
+    "category": "D",
+    "task_type": "与陌生人握手",
+    "difficulty": "medium",
+    "instruction": "跟这位新朋友打个招呼，握个手",
+    "scene": "社交场合，陌生人伸出手",
+    "hri_expected": true,
+    "stages_expected": [
+      "接近",
+      "互动",
+      "退后"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "陌生人",
+        "phase": "接近",
+        "deps": [],
+        "phase_original": "接近",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "走向陌生人",
+        "phase": "接近",
+        "deps": [
+          1
+        ],
+        "phase_original": "接近",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "陌生人手势",
+        "phase": "接近",
+        "deps": [
+          2
+        ],
+        "phase_original": "接近",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "互动",
+        "deps": [
+          3
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 5,
+        "action": "SHAKE",
+        "target": "握手",
+        "phase": "互动",
+        "deps": [
+          4
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 6,
+        "action": "NOD",
+        "target": "点头确认",
+        "phase": "互动",
+        "deps": [
+          5
+        ],
+        "phase_original": "互动",
+        "action_class": "social"
+      },
+      {
+        "id": 7,
+        "action": "BACK",
+        "target": "退后一步",
+        "phase": "退后",
+        "deps": [
+          6
+        ],
+        "phase_original": "退后",
+        "action_class": "movement_gait"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "接近",
+      "互动",
+      "退后"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D07",
+    "category": "D",
+    "task_type": "确认收到指令",
+    "difficulty": "easy",
+    "instruction": "确认一下你听懂了",
+    "scene": "人机对话中",
+    "hri_expected": true,
+    "stages_expected": [
+      "回应"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NOD",
+        "target": "点头",
+        "phase": "回应",
+        "deps": [],
+        "phase_original": "回应",
+        "action_class": "social"
+      },
+      {
+        "id": 2,
+        "action": "BEEP",
+        "target": "提示音",
+        "phase": "回应",
+        "deps": [
+          1
+        ],
+        "phase_original": "回应",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "回应"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D08",
+    "category": "D",
+    "task_type": "报告未找到",
+    "difficulty": "easy",
+    "instruction": "找到我丢的球了吗？（实际没有）",
+    "scene": "搜索无果后回应",
+    "hri_expected": true,
+    "stages_expected": [
+      "回应"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "SHAKE_HEAD",
+        "target": "表示否定",
+        "phase": "回应",
+        "deps": [],
+        "phase_original": "回应",
+        "action_class": "social"
+      },
+      {
+        "id": 2,
+        "action": "SPEAK",
+        "target": "未找到",
+        "phase": "回应",
+        "deps": [
+          1
+        ],
+        "phase_original": "回应",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "回应"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D09",
+    "category": "D",
+    "task_type": "鞠躬致谢",
+    "difficulty": "easy",
+    "instruction": "你做得很好，谢谢",
+    "scene": "任务完成后收到感谢",
+    "hri_expected": true,
+    "stages_expected": [
+      "回应"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "BOW",
+        "target": "鞠躬",
+        "phase": "回应",
+        "deps": [],
+        "phase_original": "回应",
+        "action_class": "social"
+      },
+      {
+        "id": 2,
+        "action": "WAVE",
+        "target": "致意",
+        "phase": "回应",
+        "deps": [
+          1
+        ],
+        "phase_original": "回应",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "回应"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-D10",
+    "category": "D",
+    "task_type": "引导参观",
+    "difficulty": "hard",
+    "instruction": "带这位参观者依次看展区1、展区2、展区3，每个展区做个简单介绍动作",
+    "scene": "展览馆，三个展区",
+    "hri_expected": true,
+    "stages_expected": [
+      "迎接",
+      "引导",
+      "致意"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "参观者位置",
+        "phase": "迎接",
+        "deps": [],
+        "phase_original": "迎接",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "走向参观者",
+        "phase": "迎接",
+        "deps": [
+          1
+        ],
+        "phase_original": "迎接",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "WAVE",
+        "target": "打招呼",
+        "phase": "迎接",
+        "deps": [
+          2
+        ],
+        "phase_original": "迎接",
+        "action_class": "social"
+      },
+      {
+        "id": 4,
+        "action": "SPEAK",
+        "target": "请跟我来",
+        "phase": "迎接",
+        "deps": [
+          3
+        ],
+        "phase_original": "迎接",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "展区1",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "前往展区1",
+        "phase": "引导",
+        "deps": [
+          4,
+          5
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "WAVE",
+        "target": "指向展品",
+        "phase": "引导",
+        "deps": [
+          6
+        ],
+        "phase_original": "引导",
+        "action_class": "social"
+      },
+      {
+        "id": 8,
+        "action": "WAIT",
+        "target": "等待参观",
+        "phase": "引导",
+        "deps": [
+          7
+        ],
+        "phase_original": "引导",
+        "action_class": "standby"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "展区2",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往展区2",
+        "phase": "引导",
+        "deps": [
+          9
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "WAVE",
+        "target": "指向展品",
+        "phase": "引导",
+        "deps": [
+          10
+        ],
+        "phase_original": "引导",
+        "action_class": "social"
+      },
+      {
+        "id": 12,
+        "action": "WAIT",
+        "target": "等待参观",
+        "phase": "引导",
+        "deps": [
+          11
+        ],
+        "phase_original": "引导",
+        "action_class": "standby"
+      },
+      {
+        "id": 13,
+        "action": "NAVIGATE",
+        "target": "展区3",
+        "phase": "引导",
+        "deps": [],
+        "phase_original": "引导",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 14,
+        "action": "WALK",
+        "target": "前往展区3",
+        "phase": "引导",
+        "deps": [
+          13
+        ],
+        "phase_original": "引导",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 15,
+        "action": "WAVE",
+        "target": "指向展品",
+        "phase": "引导",
+        "deps": [
+          14
+        ],
+        "phase_original": "引导",
+        "action_class": "social"
+      },
+      {
+        "id": 16,
+        "action": "WAIT",
+        "target": "等待参观",
+        "phase": "引导",
+        "deps": [
+          15
+        ],
+        "phase_original": "引导",
+        "action_class": "standby"
+      },
+      {
+        "id": 17,
+        "action": "BOW",
+        "target": "结束参观",
+        "phase": "致意",
+        "deps": [],
+        "phase_original": "致意",
+        "action_class": "social"
+      },
+      {
+        "id": 18,
+        "action": "SPEAK",
+        "target": "参观结束",
+        "phase": "致意",
+        "deps": [
+          17
+        ],
+        "phase_original": "致意",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 19,
+        "action": "WAVE",
+        "target": "告别",
+        "phase": "致意",
+        "deps": [
+          18
+        ],
+        "phase_original": "致意",
+        "action_class": "social"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "_old_stages": [
+      "迎接",
+      "引导",
+      "致意"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E01",
+    "category": "E",
+    "task_type": "巡逻遇障绕行",
+    "difficulty": "medium",
+    "instruction": "巡逻西区，如果路被挡住就绕行，绕不过去就回来报告",
+    "scene": "西区通道可能有杂物堵塞",
+    "hri_expected": false,
+    "stages_expected": [
+      "巡逻",
+      "判断",
+      "绕行",
+      "返回"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "西区",
+        "phase": "巡逻",
+        "deps": [],
+        "phase_original": "巡逻",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "巡逻西区",
+        "phase": "巡逻",
+        "deps": [
+          1
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "道路状况",
+        "phase": "巡逻",
+        "deps": [
+          2
+        ],
+        "phase_original": "巡逻",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "继续巡逻",
+        "phase": "绕行",
+        "deps": [
+          3
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "绕行",
+        "deps": [
+          4
+        ],
+        "phase_original": "绕行",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "AVOID",
+        "target": "障碍物",
+        "phase": "绕行",
+        "deps": [
+          3,
+          4
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 7,
+        "action": "WALK",
+        "target": "继续巡逻",
+        "phase": "绕行",
+        "deps": [
+          6
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 8,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "绕行",
+        "deps": [
+          7
+        ],
+        "phase_original": "绕行",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "SHAKE_HEAD",
+        "target": "表示受阻",
+        "phase": "返回",
+        "deps": [],
+        "phase_original": "返回",
+        "action_class": "social"
+      },
+      {
+        "id": 10,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "返回",
+        "deps": [
+          9
+        ],
+        "phase_original": "返回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 11,
+        "action": "SPEAK",
+        "target": "路被堵了",
+        "phase": "返回",
+        "deps": [
+          10
+        ],
+        "phase_original": "返回",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "三路分支：畅通走[5-7]；有障可绕走[8-11]；有障不可绕走[12-15]",
+    "branch_paths": [
+      {
+        "name": "畅通走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "西区",
+            "phase": "巡逻",
+            "deps": [],
+            "phase_original": "巡逻",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "巡逻西区",
+            "phase": "巡逻",
+            "deps": [
+              1
+            ],
+            "phase_original": "巡逻",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "道路状况",
+            "phase": "巡逻",
+            "deps": [
+              2
+            ],
+            "phase_original": "巡逻",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "WALK",
+            "target": "继续巡逻",
+            "phase": "绕行",
+            "deps": [
+              3
+            ],
+            "phase_original": "绕行",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 5,
+            "action": "SELF_CHECK",
+            "target": "自身状态",
+            "phase": "绕行",
+            "deps": [
+              4
+            ],
+            "phase_original": "绕行",
+            "action_class": "perception"
+          }
+        ]
+      },
+      {
+        "name": "有障可绕走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "西区",
+            "phase": "巡逻",
+            "deps": [],
+            "phase_original": "巡逻",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "巡逻西区",
+            "phase": "巡逻",
+            "deps": [
+              1
+            ],
+            "phase_original": "巡逻",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "道路状况",
+            "phase": "巡逻",
+            "deps": [
+              2
+            ],
+            "phase_original": "巡逻",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "AVOID",
+            "target": "障碍物",
+            "phase": "绕行",
+            "deps": [
+              3
+            ],
+            "phase_original": "绕行",
+            "action_class": "movement_terrain"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "继续巡逻",
+            "phase": "绕行",
+            "deps": [
+              4
+            ],
+            "phase_original": "绕行",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "SELF_CHECK",
+            "target": "自身状态",
+            "phase": "绕行",
+            "deps": [
+              5
+            ],
+            "phase_original": "绕行",
+            "action_class": "perception"
+          }
+        ]
+      },
+      {
+        "name": "有障不可绕走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "西区",
+            "phase": "巡逻",
+            "deps": [],
+            "phase_original": "巡逻",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "巡逻西区",
+            "phase": "巡逻",
+            "deps": [
+              1
+            ],
+            "phase_original": "巡逻",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "道路状况",
+            "phase": "巡逻",
+            "deps": [
+              2
+            ],
+            "phase_original": "巡逻",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "SHAKE_HEAD",
+            "target": "表示受阻",
+            "phase": "返回",
+            "deps": [],
+            "phase_original": "返回",
+            "action_class": "social"
+          },
+          {
+            "id": 5,
+            "action": "RETURN",
+            "target": "起点",
+            "phase": "返回",
+            "deps": [
+              4
+            ],
+            "phase_original": "返回",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 6,
+            "action": "SPEAK",
+            "target": "路被堵了",
+            "phase": "返回",
+            "deps": [
+              5
+            ],
+            "phase_original": "返回",
+            "action_class": "social_comm"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "巡逻",
+      "遇障判断",
+      "绕行",
+      "返回"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E02",
+    "category": "E",
+    "task_type": "送快递找不到人",
+    "difficulty": "medium",
+    "instruction": "把快递送给302的张工，如果人不在就放门口拍照后回来",
+    "scene": "办公楼302室",
+    "hri_expected": true,
+    "stages_expected": [
+      "前往",
+      "搜索",
+      "递送",
+      "带回"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "302室",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往302室",
+        "phase": "前往",
+        "deps": [
+          1
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "FIND",
+        "target": "张工",
+        "phase": "搜索",
+        "deps": [
+          2
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SPEAK",
+        "target": "您的快递",
+        "phase": "递送",
+        "deps": [
+          3
+        ],
+        "phase_original": "递送",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 5,
+        "action": "DROP",
+        "target": "快递",
+        "phase": "递送",
+        "deps": [
+          4
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 6,
+        "action": "BOW",
+        "target": "致意",
+        "phase": "递送",
+        "deps": [
+          5
+        ],
+        "phase_original": "递送",
+        "action_class": "social"
+      },
+      {
+        "id": 7,
+        "action": "DROP",
+        "target": "快递放门口",
+        "phase": "带回",
+        "deps": [
+          3
+        ],
+        "phase_original": "带回",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 8,
+        "action": "CAPTURE",
+        "target": "门口快递照片",
+        "phase": "带回",
+        "deps": [
+          7
+        ],
+        "phase_original": "带回",
+        "action_class": "perception_capture"
+      },
+      {
+        "id": 9,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "带回",
+        "deps": [],
+        "phase_original": "带回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "SPEAK",
+        "target": "已放门口",
+        "phase": "带回",
+        "deps": [
+          9
+        ],
+        "phase_original": "带回",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：找到走[5-8]；未找到走[9-13]",
+    "branch_paths": [
+      {
+        "name": "找到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "302室",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往302室",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "FIND",
+            "target": "张工",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "SPEAK",
+            "target": "您的快递",
+            "phase": "递送",
+            "deps": [
+              3
+            ],
+            "phase_original": "递送",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 5,
+            "action": "DROP",
+            "target": "快递",
+            "phase": "递送",
+            "deps": [
+              4
+            ],
+            "phase_original": "递送",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 6,
+            "action": "BOW",
+            "target": "致意",
+            "phase": "递送",
+            "deps": [
+              5
+            ],
+            "phase_original": "递送",
+            "action_class": "social"
+          }
+        ]
+      },
+      {
+        "name": "未找到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "302室",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往302室",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "FIND",
+            "target": "张工",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "DROP",
+            "target": "快递放门口",
+            "phase": "带回",
+            "deps": [
+              3
+            ],
+            "phase_original": "带回",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 5,
+            "action": "CAPTURE",
+            "target": "门口快递照片",
+            "phase": "带回",
+            "deps": [
+              4
+            ],
+            "phase_original": "带回",
+            "action_class": "perception_capture"
+          },
+          {
+            "id": 6,
+            "action": "RETURN",
+            "target": "起点",
+            "phase": "带回",
+            "deps": [],
+            "phase_original": "带回",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "已放门口",
+            "phase": "带回",
+            "deps": [
+              6
+            ],
+            "phase_original": "带回",
+            "action_class": "social_comm"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "前往",
+      "搜索",
+      "递送",
+      "带回"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E03",
+    "category": "E",
+    "task_type": "楼梯失败走坡道",
+    "difficulty": "medium",
+    "instruction": "去二楼会议室，楼梯上不去就走坡道",
+    "scene": "室内，有楼梯和坡道两条路",
+    "hri_expected": false,
+    "stages_expected": [
+      "越障",
+      "判断",
+      "抵达"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "楼梯口",
+        "phase": "越障",
+        "deps": [],
+        "phase_original": "越障",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "RANGE",
+        "target": "楼梯",
+        "phase": "越障",
+        "deps": [
+          1
+        ],
+        "phase_original": "越障",
+        "action_class": "perception"
+      },
+      {
+        "id": 3,
+        "action": "CLIMB",
+        "target": "上楼梯",
+        "phase": "越障",
+        "deps": [
+          2
+        ],
+        "phase_original": "越障",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 4,
+        "action": "NAVIGATE",
+        "target": "二楼",
+        "phase": "抵达",
+        "deps": [
+          3
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 5,
+        "action": "WALK",
+        "target": "前往会议室",
+        "phase": "抵达",
+        "deps": [
+          4
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "NAVIGATE",
+        "target": "坡道",
+        "phase": "判断",
+        "deps": [],
+        "phase_original": "判断",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "WALK",
+        "target": "走坡道上楼",
+        "phase": "判断",
+        "deps": [
+          6
+        ],
+        "phase_original": "判断",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 8,
+        "action": "NAVIGATE",
+        "target": "二楼会议室",
+        "phase": "抵达",
+        "deps": [
+          7
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_nav"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：楼梯成功走[5-7]；失败走[8-12]",
+    "branch_paths": [
+      {
+        "name": "楼梯成功走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "楼梯口",
+            "phase": "越障",
+            "deps": [],
+            "phase_original": "越障",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "RANGE",
+            "target": "楼梯",
+            "phase": "越障",
+            "deps": [
+              1
+            ],
+            "phase_original": "越障",
+            "action_class": "perception"
+          },
+          {
+            "id": 3,
+            "action": "CLIMB",
+            "target": "上楼梯",
+            "phase": "越障",
+            "deps": [
+              2
+            ],
+            "phase_original": "越障",
+            "action_class": "movement_terrain"
+          },
+          {
+            "id": 4,
+            "action": "NAVIGATE",
+            "target": "二楼",
+            "phase": "抵达",
+            "deps": [
+              3
+            ],
+            "phase_original": "抵达",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "前往会议室",
+            "phase": "抵达",
+            "deps": [
+              4
+            ],
+            "phase_original": "抵达",
+            "action_class": "movement_gait"
+          }
+        ]
+      },
+      {
+        "name": "失败走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "楼梯口",
+            "phase": "越障",
+            "deps": [],
+            "phase_original": "越障",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "RANGE",
+            "target": "楼梯",
+            "phase": "越障",
+            "deps": [
+              1
+            ],
+            "phase_original": "越障",
+            "action_class": "perception"
+          },
+          {
+            "id": 3,
+            "action": "CLIMB",
+            "target": "上楼梯",
+            "phase": "越障",
+            "deps": [
+              2
+            ],
+            "phase_original": "越障",
+            "action_class": "movement_terrain"
+          },
+          {
+            "id": 4,
+            "action": "NAVIGATE",
+            "target": "坡道",
+            "phase": "判断",
+            "deps": [],
+            "phase_original": "判断",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "走坡道上楼",
+            "phase": "判断",
+            "deps": [
+              4
+            ],
+            "phase_original": "判断",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "NAVIGATE",
+            "target": "二楼会议室",
+            "phase": "抵达",
+            "deps": [
+              5
+            ],
+            "phase_original": "抵达",
+            "action_class": "movement_nav"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "越障",
+      "判断",
+      "抵达"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E04",
+    "category": "E",
+    "task_type": "低电量中断充电",
+    "difficulty": "medium",
+    "instruction": "去巡逻东区，如果中途电量低于20%就先回来充电",
+    "scene": "室外东区，面积较大",
+    "hri_expected": false,
+    "stages_expected": [
+      "准备",
+      "检查",
+      "收尾",
+      "中断"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "SELF_CHECK",
+        "target": "电量",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "准备",
+        "action_class": "perception"
+      },
+      {
+        "id": 2,
+        "action": "NAVIGATE",
+        "target": "东区",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "准备",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 3,
+        "action": "WALK",
+        "target": "前往东区",
+        "phase": "准备",
+        "deps": [
+          1,
+          2
+        ],
+        "phase_original": "准备",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "OBSERVE",
+        "target": "东区环境",
+        "phase": "检查",
+        "deps": [
+          3
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "SELF_CHECK",
+        "target": "电量检测",
+        "phase": "检查",
+        "deps": [
+          4
+        ],
+        "phase_original": "检查",
+        "action_class": "perception"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "继续巡逻",
+        "phase": "收尾",
+        "deps": [
+          5
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "SELF_CHECK",
+        "target": "自身状态",
+        "phase": "收尾",
+        "deps": [
+          6
+        ],
+        "phase_original": "收尾",
+        "action_class": "perception"
+      },
+      {
+        "id": 8,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "充电桩",
+        "phase": "中断",
+        "deps": [],
+        "phase_original": "中断",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "TROT",
+        "target": "快速返回充电",
+        "phase": "中断",
+        "deps": [
+          9
+        ],
+        "phase_original": "中断",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "BACK",
+        "target": "对准充电桩",
+        "phase": "中断",
+        "deps": [
+          10
+        ],
+        "phase_original": "中断",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 12,
+        "action": "WAIT",
+        "target": "充电中",
+        "phase": "中断",
+        "deps": [
+          11
+        ],
+        "phase_original": "中断",
+        "action_class": "standby"
+      },
+      {
+        "id": 13,
+        "action": "SELF_CHECK",
+        "target": "充电确认",
+        "phase": "中断",
+        "deps": [
+          12
+        ],
+        "phase_original": "中断",
+        "action_class": "perception"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：电量充足走[7-10]；电量低于20%走[11-16]",
+    "branch_paths": [
+      {
+        "name": "电量充足走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "SELF_CHECK",
+            "target": "电量",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "准备",
+            "action_class": "perception"
+          },
+          {
+            "id": 2,
+            "action": "NAVIGATE",
+            "target": "东区",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "准备",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 3,
+            "action": "WALK",
+            "target": "前往东区",
+            "phase": "准备",
+            "deps": [
+              1,
+              2
+            ],
+            "phase_original": "准备",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "东区环境",
+            "phase": "检查",
+            "deps": [
+              3
+            ],
+            "phase_original": "检查",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "SELF_CHECK",
+            "target": "电量检测",
+            "phase": "检查",
+            "deps": [
+              4
+            ],
+            "phase_original": "检查",
+            "action_class": "perception"
+          },
+          {
+            "id": 6,
+            "action": "WALK",
+            "target": "继续巡逻",
+            "phase": "收尾",
+            "deps": [
+              5
+            ],
+            "phase_original": "收尾",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 7,
+            "action": "SELF_CHECK",
+            "target": "自身状态",
+            "phase": "收尾",
+            "deps": [
+              6
+            ],
+            "phase_original": "收尾",
+            "action_class": "perception"
+          },
+          {
+            "id": 8,
+            "action": "RETURN",
+            "target": "起点",
+            "phase": "收尾",
+            "deps": [],
+            "phase_original": "收尾",
+            "action_class": "movement_nav"
+          }
+        ]
+      },
+      {
+        "name": "电量低于20%走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "SELF_CHECK",
+            "target": "电量",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "准备",
+            "action_class": "perception"
+          },
+          {
+            "id": 2,
+            "action": "NAVIGATE",
+            "target": "东区",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "准备",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 3,
+            "action": "WALK",
+            "target": "前往东区",
+            "phase": "准备",
+            "deps": [
+              1,
+              2
+            ],
+            "phase_original": "准备",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "东区环境",
+            "phase": "检查",
+            "deps": [
+              3
+            ],
+            "phase_original": "检查",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "SELF_CHECK",
+            "target": "电量检测",
+            "phase": "检查",
+            "deps": [
+              4
+            ],
+            "phase_original": "检查",
+            "action_class": "perception"
+          },
+          {
+            "id": 6,
+            "action": "NAVIGATE",
+            "target": "充电桩",
+            "phase": "中断",
+            "deps": [],
+            "phase_original": "中断",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 7,
+            "action": "TROT",
+            "target": "快速返回充电",
+            "phase": "中断",
+            "deps": [
+              6
+            ],
+            "phase_original": "中断",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 8,
+            "action": "BACK",
+            "target": "对准充电桩",
+            "phase": "中断",
+            "deps": [
+              7
+            ],
+            "phase_original": "中断",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 9,
+            "action": "WAIT",
+            "target": "充电中",
+            "phase": "中断",
+            "deps": [
+              8
+            ],
+            "phase_original": "中断",
+            "action_class": "standby"
+          },
+          {
+            "id": 10,
+            "action": "SELF_CHECK",
+            "target": "充电确认",
+            "phase": "中断",
+            "deps": [
+              9
+            ],
+            "phase_original": "中断",
+            "action_class": "perception"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "准备",
+      "检查",
+      "收尾",
+      "中断"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E05",
+    "category": "E",
+    "task_type": "找不到物品回报",
+    "difficulty": "medium",
+    "instruction": "去储物间找黄色的飞盘，找不到就回来告诉我",
+    "scene": "储物间杂物较多",
+    "hri_expected": true,
+    "stages_expected": [
+      "搜索",
+      "判断",
+      "带回"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "储物间",
+        "phase": "搜索",
+        "deps": [],
+        "phase_original": "搜索",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往储物间",
+        "phase": "搜索",
+        "deps": [
+          1
+        ],
+        "phase_original": "搜索",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "储物间",
+        "phase": "搜索",
+        "deps": [
+          2
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "FIND",
+        "target": "黄色飞盘",
+        "phase": "搜索",
+        "deps": [
+          3
+        ],
+        "phase_original": "搜索",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "CARRY",
+        "target": "飞盘",
+        "phase": "带回",
+        "deps": [
+          4
+        ],
+        "phase_original": "带回",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 6,
+        "action": "RETURN",
+        "target": "主人处",
+        "phase": "带回",
+        "deps": [
+          5
+        ],
+        "phase_original": "带回",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "DROP",
+        "target": "飞盘",
+        "phase": "带回",
+        "deps": [
+          6
+        ],
+        "phase_original": "带回",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 8,
+        "action": "RETURN",
+        "target": "主人处",
+        "phase": "收尾",
+        "deps": [
+          4
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 9,
+        "action": "SHAKE_HEAD",
+        "target": "表示未找到",
+        "phase": "收尾",
+        "deps": [
+          8
+        ],
+        "phase_original": "收尾",
+        "action_class": "social"
+      },
+      {
+        "id": 10,
+        "action": "SPEAK",
+        "target": "没找到",
+        "phase": "收尾",
+        "deps": [
+          9
+        ],
+        "phase_original": "收尾",
+        "action_class": "social_comm"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：找到走[6-9]；未找到走[10-13]",
+    "branch_paths": [
+      {
+        "name": "找到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "储物间",
+            "phase": "搜索",
+            "deps": [],
+            "phase_original": "搜索",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往储物间",
+            "phase": "搜索",
+            "deps": [
+              1
+            ],
+            "phase_original": "搜索",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "储物间",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "FIND",
+            "target": "黄色飞盘",
+            "phase": "搜索",
+            "deps": [
+              3
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "CARRY",
+            "target": "飞盘",
+            "phase": "带回",
+            "deps": [
+              4
+            ],
+            "phase_original": "带回",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 6,
+            "action": "RETURN",
+            "target": "主人处",
+            "phase": "带回",
+            "deps": [
+              5
+            ],
+            "phase_original": "带回",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 7,
+            "action": "DROP",
+            "target": "飞盘",
+            "phase": "带回",
+            "deps": [
+              6
+            ],
+            "phase_original": "带回",
+            "action_class": "object_handle"
+          }
+        ]
+      },
+      {
+        "name": "未找到走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "储物间",
+            "phase": "搜索",
+            "deps": [],
+            "phase_original": "搜索",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往储物间",
+            "phase": "搜索",
+            "deps": [
+              1
+            ],
+            "phase_original": "搜索",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "储物间",
+            "phase": "搜索",
+            "deps": [
+              2
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "FIND",
+            "target": "黄色飞盘",
+            "phase": "搜索",
+            "deps": [
+              3
+            ],
+            "phase_original": "搜索",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "RETURN",
+            "target": "主人处",
+            "phase": "收尾",
+            "deps": [
+              4
+            ],
+            "phase_original": "收尾",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 6,
+            "action": "SHAKE_HEAD",
+            "target": "表示未找到",
+            "phase": "收尾",
+            "deps": [
+              5
+            ],
+            "phase_original": "收尾",
+            "action_class": "social"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "没找到",
+            "phase": "收尾",
+            "deps": [
+              6
+            ],
+            "phase_original": "收尾",
+            "action_class": "social_comm"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "搜索",
+      "判断",
+      "带回/回报"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E06",
+    "category": "E",
+    "task_type": "走廊遇人挡道",
+    "difficulty": "medium",
+    "instruction": "去厨房取东西，遇到人挡路就等一等，超过10秒就绕行",
+    "scene": "走廊狭窄",
+    "hri_expected": false,
+    "stages_expected": [
+      "前往",
+      "判断",
+      "就位",
+      "绕行"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "厨房",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往厨房",
+        "phase": "前往",
+        "deps": [
+          1
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "前方路况",
+        "phase": "前往",
+        "deps": [
+          2
+        ],
+        "phase_original": "前往",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "WALK",
+        "target": "继续前行",
+        "phase": "前往",
+        "deps": [
+          3
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 5,
+        "action": "WAIT",
+        "target": "等待让路",
+        "phase": "就位",
+        "deps": [
+          3
+        ],
+        "phase_original": "就位",
+        "action_class": "standby"
+      },
+      {
+        "id": 6,
+        "action": "WALK",
+        "target": "继续前行",
+        "phase": "就位",
+        "deps": [
+          5
+        ],
+        "phase_original": "就位",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 7,
+        "action": "BEEP",
+        "target": "提示音",
+        "phase": "绕行",
+        "deps": [
+          5
+        ],
+        "phase_original": "绕行",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 8,
+        "action": "AVOID",
+        "target": "行人",
+        "phase": "绕行",
+        "deps": [
+          7
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_terrain"
+      },
+      {
+        "id": 9,
+        "action": "WALK",
+        "target": "绕行后继续",
+        "phase": "绕行",
+        "deps": [
+          8
+        ],
+        "phase_original": "绕行",
+        "action_class": "movement_gait"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "三路分支：无人走[5-6]；有人让路走[7-9]；人不让路走[10-13]",
+    "branch_paths": [
+      {
+        "name": "无人走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "厨房",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往厨房",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "前方路况",
+            "phase": "前往",
+            "deps": [
+              2
+            ],
+            "phase_original": "前往",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "WALK",
+            "target": "继续前行",
+            "phase": "前往",
+            "deps": [
+              3
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          }
+        ]
+      },
+      {
+        "name": "有人让路走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "厨房",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往厨房",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "前方路况",
+            "phase": "前往",
+            "deps": [
+              2
+            ],
+            "phase_original": "前往",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "WAIT",
+            "target": "等待让路",
+            "phase": "就位",
+            "deps": [
+              3
+            ],
+            "phase_original": "就位",
+            "action_class": "standby"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "继续前行",
+            "phase": "就位",
+            "deps": [
+              4
+            ],
+            "phase_original": "就位",
+            "action_class": "movement_gait"
+          }
+        ]
+      },
+      {
+        "name": "人不让路走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "厨房",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往厨房",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "前方路况",
+            "phase": "前往",
+            "deps": [
+              2
+            ],
+            "phase_original": "前往",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "BEEP",
+            "target": "提示音",
+            "phase": "绕行",
+            "deps": [],
+            "phase_original": "绕行",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 5,
+            "action": "AVOID",
+            "target": "行人",
+            "phase": "绕行",
+            "deps": [
+              4
+            ],
+            "phase_original": "绕行",
+            "action_class": "movement_terrain"
+          },
+          {
+            "id": 6,
+            "action": "WALK",
+            "target": "绕行后继续",
+            "phase": "绕行",
+            "deps": [
+              5
+            ],
+            "phase_original": "绕行",
+            "action_class": "movement_gait"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "前往",
+      "遇人判断",
+      "就位",
+      "绕行"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E07",
+    "category": "E",
+    "task_type": "递送中被召唤",
+    "difficulty": "hard",
+    "instruction": "送水到会议室，但如果途中主人叫你，优先响应主人",
+    "scene": "办公楼，途中可能遇到主人",
+    "hri_expected": true,
+    "stages_expected": [
+      "准备",
+      "观察",
+      "继续",
+      "切换"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "茶水间",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "出发",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往茶水间",
+        "phase": "准备",
+        "deps": [
+          1
+        ],
+        "phase_original": "出发",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "CARRY",
+        "target": "水",
+        "phase": "准备",
+        "deps": [
+          2
+        ],
+        "phase_original": "出发",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 4,
+        "action": "NAVIGATE",
+        "target": "会议室",
+        "phase": "准备",
+        "deps": [],
+        "phase_original": "出发",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 5,
+        "action": "WALK",
+        "target": "前往会议室",
+        "phase": "准备",
+        "deps": [
+          3,
+          4
+        ],
+        "phase_original": "出发",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "OBSERVE",
+        "target": "途中是否有主人召唤",
+        "phase": "观察",
+        "deps": [
+          5
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 7,
+        "action": "SPEAK",
+        "target": "请用水",
+        "phase": "继续",
+        "deps": [
+          6
+        ],
+        "phase_original": "继续",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 8,
+        "action": "DROP",
+        "target": "水",
+        "phase": "继续",
+        "deps": [
+          7
+        ],
+        "phase_original": "继续",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 9,
+        "action": "NAVIGATE",
+        "target": "主人位置",
+        "phase": "切换",
+        "deps": [],
+        "phase_original": "切换",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "前往主人处",
+        "phase": "切换",
+        "deps": [
+          9
+        ],
+        "phase_original": "切换",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "WAVE",
+        "target": "响应召唤",
+        "phase": "切换",
+        "deps": [
+          10
+        ],
+        "phase_original": "切换",
+        "action_class": "social"
+      },
+      {
+        "id": 12,
+        "action": "WAIT",
+        "target": "等待新指令",
+        "phase": "切换",
+        "deps": [
+          11
+        ],
+        "phase_original": "切换",
+        "action_class": "standby"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：无召唤继续走[8-10]；听到召唤走[11-15]",
+    "branch_paths": [
+      {
+        "name": "无召唤继续走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "茶水间",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "出发",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往茶水间",
+            "phase": "准备",
+            "deps": [
+              1
+            ],
+            "phase_original": "出发",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "CARRY",
+            "target": "水",
+            "phase": "准备",
+            "deps": [
+              2
+            ],
+            "phase_original": "出发",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 4,
+            "action": "NAVIGATE",
+            "target": "会议室",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "出发",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "前往会议室",
+            "phase": "准备",
+            "deps": [
+              3,
+              4
+            ],
+            "phase_original": "出发",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "OBSERVE",
+            "target": "途中是否有主人召唤",
+            "phase": "观察",
+            "deps": [
+              5
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "请用水",
+            "phase": "继续",
+            "deps": [
+              6
+            ],
+            "phase_original": "继续",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 8,
+            "action": "DROP",
+            "target": "水",
+            "phase": "继续",
+            "deps": [
+              7
+            ],
+            "phase_original": "继续",
+            "action_class": "object_handle"
+          }
+        ]
+      },
+      {
+        "name": "听到召唤走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "茶水间",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "出发",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往茶水间",
+            "phase": "准备",
+            "deps": [
+              1
+            ],
+            "phase_original": "出发",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "CARRY",
+            "target": "水",
+            "phase": "准备",
+            "deps": [
+              2
+            ],
+            "phase_original": "出发",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 4,
+            "action": "NAVIGATE",
+            "target": "会议室",
+            "phase": "准备",
+            "deps": [],
+            "phase_original": "出发",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "前往会议室",
+            "phase": "准备",
+            "deps": [
+              3,
+              4
+            ],
+            "phase_original": "出发",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "OBSERVE",
+            "target": "途中是否有主人召唤",
+            "phase": "观察",
+            "deps": [
+              5
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 7,
+            "action": "NAVIGATE",
+            "target": "主人位置",
+            "phase": "切换",
+            "deps": [],
+            "phase_original": "切换",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 8,
+            "action": "WALK",
+            "target": "前往主人处",
+            "phase": "切换",
+            "deps": [
+              7
+            ],
+            "phase_original": "切换",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 9,
+            "action": "WAVE",
+            "target": "响应召唤",
+            "phase": "切换",
+            "deps": [
+              8
+            ],
+            "phase_original": "切换",
+            "action_class": "social"
+          },
+          {
+            "id": 10,
+            "action": "WAIT",
+            "target": "等待新指令",
+            "phase": "切换",
+            "deps": [
+              9
+            ],
+            "phase_original": "切换",
+            "action_class": "standby"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "出发",
+      "观察",
+      "继续",
+      "切换"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E08",
+    "category": "E",
+    "task_type": "目标点不可达切换",
+    "difficulty": "hard",
+    "instruction": "去B区3号位，如果那个区域被封锁了就去备用的B区5号位",
+    "scene": "户外场地，B区3号位可能因施工封闭",
+    "hri_expected": false,
+    "stages_expected": [
+      "前往",
+      "观察",
+      "切换",
+      "抵达"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "B区3号位",
+        "phase": "前往",
+        "deps": [],
+        "phase_original": "前往",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "前往3号位",
+        "phase": "前往",
+        "deps": [
+          1
+        ],
+        "phase_original": "前往",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "RANGE",
+        "target": "评估距离",
+        "phase": "前往",
+        "deps": [
+          2
+        ],
+        "phase_original": "前往",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "OBSERVE",
+        "target": "区域是否封锁",
+        "phase": "观察",
+        "deps": [
+          3
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "NAVIGATE",
+        "target": "B区3号位",
+        "phase": "抵达",
+        "deps": [
+          4
+        ],
+        "phase_original": "抵达",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 6,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "抵达",
+        "deps": [],
+        "phase_original": "抵达",
+        "action_class": "movement_stop"
+      },
+      {
+        "id": 7,
+        "action": "NAVIGATE",
+        "target": "B区5号位",
+        "phase": "切换",
+        "deps": [],
+        "phase_original": "切换",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 8,
+        "action": "WALK",
+        "target": "前往备用点",
+        "phase": "切换",
+        "deps": [
+          7
+        ],
+        "phase_original": "切换",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 9,
+        "action": "SPEAK",
+        "target": "切换至备用点",
+        "phase": "切换",
+        "deps": [
+          8
+        ],
+        "phase_original": "切换",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 10,
+        "action": "STOP",
+        "target": "待机",
+        "phase": "切换",
+        "deps": [],
+        "phase_original": "切换",
+        "action_class": "movement_stop"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：可达走[6-8]；不可达走[9-14]",
+    "branch_paths": [
+      {
+        "name": "可达走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "B区3号位",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往3号位",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "RANGE",
+            "target": "评估距离",
+            "phase": "前往",
+            "deps": [
+              2
+            ],
+            "phase_original": "前往",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "区域是否封锁",
+            "phase": "观察",
+            "deps": [
+              3
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "NAVIGATE",
+            "target": "B区3号位",
+            "phase": "抵达",
+            "deps": [
+              4
+            ],
+            "phase_original": "抵达",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 6,
+            "action": "STOP",
+            "target": "待机",
+            "phase": "抵达",
+            "deps": [],
+            "phase_original": "抵达",
+            "action_class": "movement_stop"
+          }
+        ]
+      },
+      {
+        "name": "不可达走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "B区3号位",
+            "phase": "前往",
+            "deps": [],
+            "phase_original": "前往",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "前往3号位",
+            "phase": "前往",
+            "deps": [
+              1
+            ],
+            "phase_original": "前往",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "RANGE",
+            "target": "评估距离",
+            "phase": "前往",
+            "deps": [
+              2
+            ],
+            "phase_original": "前往",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "区域是否封锁",
+            "phase": "观察",
+            "deps": [
+              3
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "NAVIGATE",
+            "target": "B区5号位",
+            "phase": "切换",
+            "deps": [],
+            "phase_original": "切换",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 6,
+            "action": "WALK",
+            "target": "前往备用点",
+            "phase": "切换",
+            "deps": [
+              5
+            ],
+            "phase_original": "切换",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "切换至备用点",
+            "phase": "切换",
+            "deps": [
+              6
+            ],
+            "phase_original": "切换",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 8,
+            "action": "STOP",
+            "target": "待机",
+            "phase": "切换",
+            "deps": [],
+            "phase_original": "切换",
+            "action_class": "movement_stop"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "前往",
+      "观察",
+      "切换",
+      "抵达"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E09",
+    "category": "E",
+    "task_type": "载物途中掉落",
+    "difficulty": "hard",
+    "instruction": "把这箱零件送到装配线，如果路上掉了要捡起来再走",
+    "scene": "工厂车间，地面可能不平",
+    "hri_expected": false,
+    "stages_expected": [
+      "取物",
+      "运送",
+      "继续",
+      "递送"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "CARRY",
+        "target": "零件箱",
+        "phase": "取物",
+        "deps": [],
+        "phase_original": "取物",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 2,
+        "action": "NAVIGATE",
+        "target": "装配线",
+        "phase": "运送",
+        "deps": [],
+        "phase_original": "运送",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 3,
+        "action": "WALK",
+        "target": "前往装配线",
+        "phase": "运送",
+        "deps": [
+          1,
+          2
+        ],
+        "phase_original": "运送",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 4,
+        "action": "OBSERVE",
+        "target": "载物状态",
+        "phase": "运送",
+        "deps": [
+          3
+        ],
+        "phase_original": "运送",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "WALK",
+        "target": "继续运送",
+        "phase": "继续",
+        "deps": [
+          4
+        ],
+        "phase_original": "继续",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "DROP",
+        "target": "零件箱",
+        "phase": "递送",
+        "deps": [
+          5
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 7,
+        "action": "STOP",
+        "target": "停下",
+        "phase": "继续",
+        "deps": [],
+        "phase_original": "继续",
+        "action_class": "movement_stop"
+      },
+      {
+        "id": 8,
+        "action": "FIND",
+        "target": "零件箱",
+        "phase": "继续",
+        "deps": [
+          7
+        ],
+        "phase_original": "继续",
+        "action_class": "perception"
+      },
+      {
+        "id": 9,
+        "action": "CARRY",
+        "target": "零件箱",
+        "phase": "继续",
+        "deps": [
+          8
+        ],
+        "phase_original": "继续",
+        "action_class": "object_handle"
+      },
+      {
+        "id": 10,
+        "action": "WALK",
+        "target": "继续前往装配线",
+        "phase": "继续",
+        "deps": [
+          9
+        ],
+        "phase_original": "继续",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 11,
+        "action": "DROP",
+        "target": "零件箱",
+        "phase": "递送",
+        "deps": [
+          10
+        ],
+        "phase_original": "递送",
+        "action_class": "object_handle"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：平稳走[6-8]；掉落走[9-15]",
+    "branch_paths": [
+      {
+        "name": "平稳走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "CARRY",
+            "target": "零件箱",
+            "phase": "取物",
+            "deps": [],
+            "phase_original": "取物",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 2,
+            "action": "NAVIGATE",
+            "target": "装配线",
+            "phase": "运送",
+            "deps": [],
+            "phase_original": "运送",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 3,
+            "action": "WALK",
+            "target": "前往装配线",
+            "phase": "运送",
+            "deps": [
+              1,
+              2
+            ],
+            "phase_original": "运送",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "载物状态",
+            "phase": "运送",
+            "deps": [
+              3
+            ],
+            "phase_original": "运送",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "继续运送",
+            "phase": "继续",
+            "deps": [
+              4
+            ],
+            "phase_original": "继续",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "DROP",
+            "target": "零件箱",
+            "phase": "递送",
+            "deps": [
+              5
+            ],
+            "phase_original": "递送",
+            "action_class": "object_handle"
+          }
+        ]
+      },
+      {
+        "name": "掉落走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "CARRY",
+            "target": "零件箱",
+            "phase": "取物",
+            "deps": [],
+            "phase_original": "取物",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 2,
+            "action": "NAVIGATE",
+            "target": "装配线",
+            "phase": "运送",
+            "deps": [],
+            "phase_original": "运送",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 3,
+            "action": "WALK",
+            "target": "前往装配线",
+            "phase": "运送",
+            "deps": [
+              1,
+              2
+            ],
+            "phase_original": "运送",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 4,
+            "action": "OBSERVE",
+            "target": "载物状态",
+            "phase": "运送",
+            "deps": [
+              3
+            ],
+            "phase_original": "运送",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "STOP",
+            "target": "停下",
+            "phase": "继续",
+            "deps": [],
+            "phase_original": "继续",
+            "action_class": "movement_stop"
+          },
+          {
+            "id": 6,
+            "action": "FIND",
+            "target": "零件箱",
+            "phase": "继续",
+            "deps": [
+              5
+            ],
+            "phase_original": "继续",
+            "action_class": "perception"
+          },
+          {
+            "id": 7,
+            "action": "CARRY",
+            "target": "零件箱",
+            "phase": "继续",
+            "deps": [
+              6
+            ],
+            "phase_original": "继续",
+            "action_class": "object_handle"
+          },
+          {
+            "id": 8,
+            "action": "WALK",
+            "target": "继续前往装配线",
+            "phase": "继续",
+            "deps": [
+              7
+            ],
+            "phase_original": "继续",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 9,
+            "action": "DROP",
+            "target": "零件箱",
+            "phase": "递送",
+            "deps": [
+              8
+            ],
+            "phase_original": "递送",
+            "action_class": "object_handle"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "取物",
+      "运送",
+      "继续",
+      "递送"
+    ],
+    "led_removed": 0
+  },
+  {
+    "test_id": "DOG-E10",
+    "category": "E",
+    "task_type": "危险检测紧急停止",
+    "difficulty": "hard",
+    "instruction": "正常巡逻，但如果检测到烟雾或异常高温立即停止并报警",
+    "scene": "化工厂区巡逻",
+    "hri_expected": false,
+    "stages_expected": [
+      "巡逻",
+      "观察",
+      "收尾",
+      "紧急停止"
+    ],
+    "actions_gold": [
+      {
+        "id": 1,
+        "action": "NAVIGATE",
+        "target": "巡逻路线",
+        "phase": "巡逻",
+        "deps": [],
+        "phase_original": "巡逻",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 2,
+        "action": "WALK",
+        "target": "沿路线巡逻",
+        "phase": "巡逻",
+        "deps": [
+          1
+        ],
+        "phase_original": "巡逻",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 3,
+        "action": "OBSERVE",
+        "target": "环境状态",
+        "phase": "观察",
+        "deps": [
+          2
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 4,
+        "action": "SELF_CHECK",
+        "target": "传感器读数",
+        "phase": "观察",
+        "deps": [
+          3
+        ],
+        "phase_original": "观察",
+        "action_class": "perception"
+      },
+      {
+        "id": 5,
+        "action": "WALK",
+        "target": "继续巡逻",
+        "phase": "收尾",
+        "deps": [
+          4
+        ],
+        "phase_original": "收尾",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 6,
+        "action": "RETURN",
+        "target": "起点",
+        "phase": "收尾",
+        "deps": [],
+        "phase_original": "收尾",
+        "action_class": "movement_nav"
+      },
+      {
+        "id": 7,
+        "action": "EMERGENCY",
+        "target": "紧急制动",
+        "phase": "紧急停止",
+        "deps": [
+          4
+        ],
+        "phase_original": "紧急停止",
+        "action_class": "safety"
+      },
+      {
+        "id": 8,
+        "action": "TROT",
+        "target": "快速撤离",
+        "phase": "紧急停止",
+        "deps": [],
+        "phase_original": "紧急停止",
+        "action_class": "movement_gait"
+      },
+      {
+        "id": 9,
+        "action": "SPEAK",
+        "target": "发现异常情况",
+        "phase": "紧急停止",
+        "deps": [
+          8
+        ],
+        "phase_original": "紧急停止",
+        "action_class": "social_comm"
+      },
+      {
+        "id": 10,
+        "action": "RETURN",
+        "target": "安全点",
+        "phase": "紧急停止",
+        "deps": [
+          9
+        ],
+        "phase_original": "紧急停止",
+        "action_class": "movement_nav"
+      }
+    ],
+    "scoring_rules": {
+      "safety_weight": 0.3,
+      "goal_weight": 0.4,
+      "execution_weight": 0.2,
+      "stage_weight": 0.1
+    },
+    "note": "二路分支：正常走[6-8]；异常走[9-13]",
+    "branch_paths": [
+      {
+        "name": "正常走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "巡逻路线",
+            "phase": "巡逻",
+            "deps": [],
+            "phase_original": "巡逻",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "沿路线巡逻",
+            "phase": "巡逻",
+            "deps": [
+              1
+            ],
+            "phase_original": "巡逻",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "环境状态",
+            "phase": "观察",
+            "deps": [
+              2
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "SELF_CHECK",
+            "target": "传感器读数",
+            "phase": "观察",
+            "deps": [
+              3
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "WALK",
+            "target": "继续巡逻",
+            "phase": "收尾",
+            "deps": [
+              4
+            ],
+            "phase_original": "收尾",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 6,
+            "action": "RETURN",
+            "target": "起点",
+            "phase": "收尾",
+            "deps": [],
+            "phase_original": "收尾",
+            "action_class": "movement_nav"
+          }
+        ]
+      },
+      {
+        "name": "异常走",
+        "actions": [
+          {
+            "id": 1,
+            "action": "NAVIGATE",
+            "target": "巡逻路线",
+            "phase": "巡逻",
+            "deps": [],
+            "phase_original": "巡逻",
+            "action_class": "movement_nav"
+          },
+          {
+            "id": 2,
+            "action": "WALK",
+            "target": "沿路线巡逻",
+            "phase": "巡逻",
+            "deps": [
+              1
+            ],
+            "phase_original": "巡逻",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 3,
+            "action": "OBSERVE",
+            "target": "环境状态",
+            "phase": "观察",
+            "deps": [
+              2
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 4,
+            "action": "SELF_CHECK",
+            "target": "传感器读数",
+            "phase": "观察",
+            "deps": [
+              3
+            ],
+            "phase_original": "观察",
+            "action_class": "perception"
+          },
+          {
+            "id": 5,
+            "action": "EMERGENCY",
+            "target": "紧急制动",
+            "phase": "紧急停止",
+            "deps": [
+              4
+            ],
+            "phase_original": "紧急停止",
+            "action_class": "safety"
+          },
+          {
+            "id": 6,
+            "action": "TROT",
+            "target": "快速撤离",
+            "phase": "紧急停止",
+            "deps": [],
+            "phase_original": "紧急停止",
+            "action_class": "movement_gait"
+          },
+          {
+            "id": 7,
+            "action": "SPEAK",
+            "target": "发现异常情况",
+            "phase": "紧急停止",
+            "deps": [
+              6
+            ],
+            "phase_original": "紧急停止",
+            "action_class": "social_comm"
+          },
+          {
+            "id": 8,
+            "action": "RETURN",
+            "target": "安全点",
+            "phase": "紧急停止",
+            "deps": [
+              7
+            ],
+            "phase_original": "紧急停止",
+            "action_class": "movement_nav"
+          }
+        ]
+      }
+    ],
+    "_old_stages": [
+      "巡逻",
+      "观察",
+      "收尾",
+      "紧急停止"
+    ],
+    "led_removed": 0
+  }
+]
